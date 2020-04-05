@@ -13,11 +13,11 @@
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
-            <v-list-tile-avatar>
+            <!--<v-list-tile-avatar>
               <img src="../assets/2.jpeg">
-            </v-list-tile-avatar>
+            </v-list-tile-avatar>-->
             <v-list-tile-content>
-              <v-list-tile-title>虎哥</v-list-tile-title>
+              <v-list-tile-title>欢迎您</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -76,10 +76,10 @@
       <v-toolbar-title v-text="title"/>
       <v-spacer/>
 
-      <!-- 调色板 -->
+      <!--&lt;!&ndash; 调色板 &ndash;&gt;
       <v-btn icon @click.stop="dark = !dark">
         <v-icon>invert_colors</v-icon>
-      </v-btn>
+      </v-btn>-->
       <!-- 顶部导航用户菜单 -->
       <v-btn icon @click.stop="dark = !dark">
         <v-icon>account_box</v-icon>
@@ -87,11 +87,11 @@
     </v-toolbar>
     <!--中间内容主体-->
     <v-content>
-      <v-breadcrumbs>
+      <!--<v-breadcrumbs>
         <v-icon slot="divider">chevron_right</v-icon>
         <v-breadcrumbs-item>{{item1}}</v-breadcrumbs-item>
         <v-breadcrumbs-item>{{item2}}</v-breadcrumbs-item>
-      </v-breadcrumbs>
+      </v-breadcrumbs>-->
       <div>
         <!--定义一个路由锚点，Layout的子组件内容将在这里展示-->
         <router-view/>
@@ -109,7 +109,7 @@
         dark: false,// 是否暗黑主题
         drawer: true,// 左侧导航是否隐藏
         miniVariant: false,// 左侧导航是否收起
-        title: '乐优商城后台管理',// 顶部导航条名称,
+        title: '垃圾回收后台管理系统',// 顶部导航条名称,
         menuMap: {}
       }
     },

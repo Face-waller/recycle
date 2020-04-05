@@ -8,6 +8,7 @@
                :on-remove="handleRemove"
                ref="multiUpload"
                :file-list="fileList"
+               :before-upload="handleBeforeUpload"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
@@ -16,6 +17,7 @@
                class="logo-uploader"
                :action="baseUrl + url"
                :show-file-list="false"
+               :before-upload="handleBeforeUpload"
                :on-success="handleSuccess">
       <div @mouseover="showBtn=true" @mouseout="showBtn=false">
         <i @click.stop="removeSingle" v-show="dialogImageUrl && showBtn" class="el-icon-close remove-btn"></i>
@@ -61,7 +63,7 @@
         showBtn: false,
         show: false,
         dialogImageUrl: "",
-        baseUrl: config.api,
+        baseUrl: config.url,
         avatarStyle: {
           width: this.picWidth + 'px',
           height: this.picHeight + 'px',
@@ -103,13 +105,26 @@
       removeSingle() {
         this.dialogImageUrl = "";
         this.$refs.singleUpload.clearFiles();
-      }
+      },
+      handleBeforeUpload(file) {
+          alert(file.type);
+          alert(file.size);
+          const isImage = file.type.includes("image");
+          if (!isImage) {
+              this.$message.error("上传文件类型必须是图片!");
+          }
+          const isLt2M = file.size / 1024 / 1024 < 2;
+          if (!isLt2M) {
+              this.$message.error("上传图片大小不能超过 2MB!");
+          }
+          return isImage && isLt2M;
+      },
     },
     watch: {
       value:{
         deep:true,
         handler(val,oldVal){
-    
+
           if (this.multiple) {
             this.fileList = val.map(f => {
               return {response: f,url:f}

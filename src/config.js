@@ -1,11 +1,11 @@
-const baseUrl = 'http://api.leyou.com'
+const baseUrl = 'http://192.168.43.38:8001'
 const config = {
   locale: 'zh-CN', // en-US, zh-CN
   url: baseUrl,
   debug: {
     http: false // http request log
   },
-  api: `${baseUrl}/api`,
+  api: `${baseUrl}`,
   theme:{
     primary: "#2196F3",
     secondary: "#455A64",

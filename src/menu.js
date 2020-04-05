@@ -7,6 +7,14 @@ var menus = [
   },
   {
     action: "apps",
+    title: "活动资讯管理",
+    path:"/item",
+    items: [
+      { title: "活动资讯列表", path: "/Activity" },
+    ]
+  },
+  {
+    action: "apps",
     title: "商品管理",
     path:"/item",
     items: [
