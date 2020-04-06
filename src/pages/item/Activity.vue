@@ -46,8 +46,8 @@
         label="图片"
         width="120">
         <!-- 图片的显示 -->
-        <template   slot-scope="scope">
-          <img :src="'http://192.168.43.38:8001/trash/'+scope.row.activityImages"  min-width="50" height="50" />
+        <template slot-scope="scope">
+          <img :src="'http://127.0.0.1:8001/trash/'+scope.row.activityImages" min-width="50" height="50"/>
         </template>
       </el-table-column>
       <el-table-column
@@ -61,7 +61,7 @@
         width="300">
       </el-table-column>
       <el-table-column
-        prop="state"
+        prop="state" :formatter="stateFormat"
         label="状态"
         width="120">
       </el-table-column>
@@ -122,24 +122,24 @@
   import ActivityForm from './ActivityForm'
 
   export default {
-    inject:['reload'],      // 注入App里的reload方法
+    inject: ['reload'],      // 注入App里的reload方法
     name: "Activity",
     data() {
       return {
-          total:1, // 总条数
-          pageSize:5, // 每页数量
-          currentPageIndex:1, //当前页码
-          records: [{
-              "id": 0,  //主键id
-              "activityTitle": "",  //活动标题
-              "activityContent": "", //活动内容
-              "activityImages": "", //图片地址
-              "activityTime": "2020-02-18 18:53:00",  //活动时间
-              "blogroll": "http://www.baidu.com",  //友情链接
-              "userId": 0,  //创建人
-              "state": 0,  //活动状态
-              "createTime": "",  //创建时间
-              "modifyTime": ""  //修改时间
+        total: 1, // 总条数
+        pageSize: 5, // 每页数量
+        currentPageIndex: 1, //当前页码
+        records: [{
+          "id": 0,  //主键id
+          "activityTitle": "",  //活动标题
+          "activityContent": "", //活动内容
+          "activityImages": "", //图片地址
+          "activityTime": "2020-02-18 18:53:00",  //活动时间
+          "blogroll": "http://www.baidu.com",  //友情链接
+          "userId": 0,  //创建人
+          "state": 0,  //活动状态
+          "createTime": "",  //创建时间
+          "modifyTime": ""  //修改时间
         }],
         filter: {
           saleable: true, // 在用/禁用
@@ -172,164 +172,171 @@
       }
     },
     methods: {
-        // 分页条数改变
-        handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
-            this.pageSize = val;
-            this.getDataFromServer()
-        },
-        // 分页页码改变
-        handleCurrentChange(val) {
-            console.log(`当前页: ${val}`);
-            this.currentPageIndex = val;
-            this.getDataFromServer()
-        },
-        // 某一条编辑的点击事件
-        handleClick(oldActivity) {
-            console.log(oldActivity);
-            // 修改标记
-            this.isEdit = true;
-            // 控制弹窗可见：
-            this.show = true;
-            this.oldActivity = oldActivity;
-        },
-        // 某一条禁用的点击事件
-        handle2Click(id) {
-            console.log(id);
-            // 发起请求
-            this.$http.get(
-                "/trash/activity/activityMsg/delete?activityId="+id
-            )
-            .then(res => {
-                alert("禁用成功!")
-                // 刷新当前页面
-                this.reload();
-            })
-        },
-        addActivity() {
-            // 获取表单数据
-            let child =this.$refs.ch;
-            /*let data = new FormData();
-            data.append("activityTitle",child.activity.title);
-            data.append("activityContent",child.activity.content);
-            data.append("activityImages",child.activity.image);
-            data.append("activityTime",child.activity.date);
-            data.append("blogroll",child.activity.link);*/
-            // 发请求新增活动资讯
-            this.$http.post(
-                "/trash/activity/activityMsg/addActivity",
-                {
-                    "activityTitle": child.activity.title,
-                    "activityContent": child.activity.content,
-                    "activityImages": child.activity.image,
-                    "activityTime": child.activity.date,
-                    "blogroll": child.activity.link
-                }
-            )
-            .then(res => {
-                console.log(res.data);
-                this.closeWindow();
-            })
-            .catch(error => {
-                /* 不能使用this对象来操作错误提示,在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
-                *解决办法：
-                *1、用ES6箭头函数，箭头方法可以和父方法共享变量
-                *2、在请求axios外面定义一下 var that=this
+      // 分页条数改变
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+        this.pageSize = val;
+        this.getDataFromServer()
+      },
+      // 分页页码改变
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.currentPageIndex = val;
+        this.getDataFromServer()
+      },
+      // 某一条编辑的点击事件
+      handleClick(oldActivity) {
+        console.log(oldActivity);
+        // 修改标记
+        this.isEdit = true;
+        // 控制弹窗可见：
+        this.show = true;
+        this.oldActivity = oldActivity;
+      },
+      // 某一条禁用的点击事件
+      handle2Click(id) {
+        console.log(id);
+        // 发起请求
+        this.$http.get(
+          "/trash/activity/activityMsg/delete?activityId=" + id
+        )
+          .then(res => {
+            alert("禁用成功!")
+            // 刷新当前页面
+            this.reload();
+          })
+      },
+      addActivity() {
+        // 获取表单数据
+        let child = this.$refs.ch;
+        /*let data = new FormData();
+        data.append("activityTitle",child.activity.title);
+        data.append("activityContent",child.activity.content);
+        data.append("activityImages",child.activity.image);
+        data.append("activityTime",child.activity.date);
+        data.append("blogroll",child.activity.link);*/
+        // 发请求新增活动资讯
+        this.$http.post(
+          "/trash/activity/activityMsg/addActivity",
+          {
+            "activityTitle": child.activity.title,
+            "activityContent": child.activity.content,
+            "activityImages": child.activity.image,
+            "activityTime": child.activity.date,
+            "blogroll": child.activity.link
+          }
+        )
+          .then(res => {
+            console.log(res.data);
+            this.closeWindow();
+          })
+          .catch(error => {
+            /* 不能使用this对象来操作错误提示,在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            *解决办法：
+            *1、用ES6箭头函数，箭头方法可以和父方法共享变量
+            *2、在请求axios外面定义一下 var that=this
 
-                /**
-                 * 可将整个error转为json字符串: this.errmsg = error.toJSON().message;
-                 * 下面对error进行判断,
-                 */
-                if(error.response) {
-                    // The request was made and the server responded with a status code
-                    /*console.log("response-data: ", error.response.data);
-                     console.log("response-statues: ", error.response.status);
-                     console.log("response-headers: ", error.response.headers);*/
-                    this.errmsg = error.response.data.message;
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    console.log("请求超时");
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    // console.log("error-config: ", error.config);
-                    console.log("Error: ", error.message);
-                }
-            })
-        },
-        getDataFromServer() {
-            // 请求页面数据
-            // 获取数据
-            var pageSize = this.pageSize;
-            var currentPageIndex = this.currentPageIndex;
-            var param = this.filter.search===null?" ":this.filter.search;
-            var state = this.filter.saleable===true?1:0;
-            this.$http.get(
-                "/trash/activity/activityMsg/list?pageSize="+pageSize
-                +"&pageIndex="+currentPageIndex
-                +"&param="+param
-                +"&state="+ state
-            ).then(resp => {
-                console.log(resp.data)
-                this.total = resp.data.data.total;
-                this.pageSize =resp.data.data.size;
-                this.currentPageIndex = resp.data.data.current;
-                this.records = resp.data.data.records;
-            }).catch(error => {
-                /* 不能使用this对象来操作错误提示,在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
-                *解决办法：
-                *1、用ES6箭头函数，箭头方法可以和父方法共享变量
-                *2、在请求axios外面定义一下 var that=this
+            /**
+             * 可将整个error转为json字符串: this.errmsg = error.toJSON().message;
+             * 下面对error进行判断,
+             */
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              /*console.log("response-data: ", error.response.data);
+               console.log("response-statues: ", error.response.status);
+               console.log("response-headers: ", error.response.headers);*/
+              this.errmsg = error.response.data.message;
+            } else if (error.request) {
+              // The request was made but no response was received
+              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+              // http.ClientRequest in node.js
+              console.log("请求超时");
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              // console.log("error-config: ", error.config);
+              console.log("Error: ", error.message);
+            }
+          })
+      },
+      getDataFromServer() {
+        // 请求页面数据
+        // 获取数据
+        var pageSize = this.pageSize;
+        var currentPageIndex = this.currentPageIndex;
+        var param = this.filter.search === null ? " " : this.filter.search;
+        var state = this.filter.saleable === true ? 1 : 0;
+        this.$http.get(
+          "/trash/activity/activityMsg/list?pageSize=" + pageSize
+          + "&pageIndex=" + currentPageIndex
+          + "&param=" + param
+          + "&state=" + state
+        ).then(resp => {
+          console.log(resp.data)
+          this.total = resp.data.data.total;
+          this.pageSize = resp.data.data.size;
+          this.currentPageIndex = resp.data.data.current;
+          this.records = resp.data.data.records;
+        }).catch(error => {
+          /* 不能使用this对象来操作错误提示,在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+          *解决办法：
+          *1、用ES6箭头函数，箭头方法可以和父方法共享变量
+          *2、在请求axios外面定义一下 var that=this
 
-                /**
-                 * 可将整个error转为json字符串: this.errmsg = error.toJSON().message;
-                 * 下面对error进行判断,
-                 */
-                if(error.response) {
-                    // The request was made and the server responded with a status code
-                    /*console.log("response-data: ", error.response.data);
-                     console.log("response-statues: ", error.response.status);
-                     console.log("response-headers: ", error.response.headers);*/
-                    this.errmsg = error.response.data.message;
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    console.log("请求超时");
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    // console.log("error-config: ", error.config);
-                    console.log("Error: ", error.message);
-                }
-            })
+          /**
+           * 可将整个error转为json字符串: this.errmsg = error.toJSON().message;
+           * 下面对error进行判断,
+           */
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            /*console.log("response-data: ", error.response.data);
+             console.log("response-statues: ", error.response.status);
+             console.log("response-headers: ", error.response.headers);*/
+            this.errmsg = error.response.data.message;
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log("请求超时");
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            // console.log("error-config: ", error.config);
+            console.log("Error: ", error.message);
+          }
+        })
 
-        },
-        addActivities() {
-            // 修改标记
-            this.isEdit = false;
-            // 控制弹窗可见：
-            this.show = true;
-            // 把oldBrand变为null
-            this.oldActivity = {};
-        },
-        async editGoods(oldActivity) {
-            // 发起请求，查询商品详情和skus
-            /*oldActivity.spuDetail = await this.$http.loadData("/item/spu/detail/" + oldActivity.id);
-            oldActivity.skus = await this.$http.loadData("/item/sku/list?id=" + oldActivity.id);*/
-            // 修改标记
-            this.isEdit = true;
-            // 控制弹窗可见：
-            this.show = true;
-        },
-        closeWindow() {
-            // 重新加载数据
-            this.getDataFromServer();
-            // 关闭窗口
-            this.show = false;
-            // 将步骤调整到1
-            this.step = 1;
-        },
+      },
+      addActivities() {
+        // 修改标记
+        this.isEdit = false;
+        // 控制弹窗可见：
+        this.show = true;
+        // 把oldBrand变为null
+        this.oldActivity = {};
+      },
+      async editGoods(oldActivity) {
+        // 发起请求，查询商品详情和skus
+        /*oldActivity.spuDetail = await this.$http.loadData("/item/spu/detail/" + oldActivity.id);
+        oldActivity.skus = await this.$http.loadData("/item/sku/list?id=" + oldActivity.id);*/
+        // 修改标记
+        this.isEdit = true;
+        // 控制弹窗可见：
+        this.show = true;
+      },
+      closeWindow() {
+        // 重新加载数据
+        this.getDataFromServer();
+        // 关闭窗口
+        this.show = false;
+        // 将步骤调整到1
+        this.step = 1;
+      },
+      stateFormat(row,column){
+        if (row.state === 0){
+          return '禁用'
+        }else if (row.state === 1){
+          return '在用'
+        }
+      }
     },
     components: {
       ActivityForm
