@@ -210,7 +210,7 @@
             this.$http.post(
                 "/trash/activity/activityMsg/update",
                 {
-                    "id": chi.activity.id,
+                    "id": child.activity.id,
                     "activityTitle": child.activity.title,
                     "activityContent": child.activity.content,
                     "activityImages": child.activity.image,
