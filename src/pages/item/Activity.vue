@@ -61,7 +61,8 @@
         width="300">
       </el-table-column>
       <el-table-column
-        prop="state" :formatter="stateFormat"
+        prop="state"
+        :formatter="stateFormat"
         label="状态"
         width="120">
       </el-table-column>
@@ -201,7 +202,7 @@
           "/trash/activity/activityMsg/delete?activityId=" + id
         )
           .then(res => {
-            alert("禁用成功!")
+            alert("禁用成功!");
             // 刷新当前页面
             this.reload();
           })
@@ -209,54 +210,62 @@
       addActivity() {
         // 获取表单数据
         let child = this.$refs.ch;
-        /*let data = new FormData();
-        data.append("activityTitle",child.activity.title);
-        data.append("activityContent",child.activity.content);
-        data.append("activityImages",child.activity.image);
-        data.append("activityTime",child.activity.date);
-        data.append("blogroll",child.activity.link);*/
-        // 发请求新增活动资讯
-        this.$http.post(
-          "/trash/activity/activityMsg/addActivity",
-          {
-            "activityTitle": child.activity.title,
-            "activityContent": child.activity.content,
-            "activityImages": child.activity.image,
-            "activityTime": child.activity.date,
-            "blogroll": child.activity.link
-          }
-        )
-          .then(res => {
-            console.log(res.data);
-            this.closeWindow();
-          })
-          .catch(error => {
-            /* 不能使用this对象来操作错误提示,在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
-            *解决办法：
-            *1、用ES6箭头函数，箭头方法可以和父方法共享变量
-            *2、在请求axios外面定义一下 var that=this
+        // 判断是新增还是修改
+        if (this.isEdit) {
+            // 修改
+            // 发请求修改活动资讯
+            this.$http.post(
+                "/trash/activity/activityMsg/update",
+                {
+                    "activityTitle": child.activity.title,
+                    "activityContent": child.activity.content,
+                    "activityImages": child.activity.image,
+                    "activityTime": child.activity.date,
+                    "blogroll": child.activity.link
+                }
+            )
+            .then(res => {
+                console.log(res.data);
+                this.closeWindow();
+            })
+            .catch(error => {
+                if (error.response) {
+                    this.errmsg = error.response.data.message;
+                } else if (error.request) {
+                    console.log("请求超时");
+                } else {
+                    console.log("Error: ", error.message);
+                }
+            })
 
-            /**
-             * 可将整个error转为json字符串: this.errmsg = error.toJSON().message;
-             * 下面对error进行判断,
-             */
-            if (error.response) {
-              // The request was made and the server responded with a status code
-              /*console.log("response-data: ", error.response.data);
-               console.log("response-statues: ", error.response.status);
-               console.log("response-headers: ", error.response.headers);*/
-              this.errmsg = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-              // http.ClientRequest in node.js
-              console.log("请求超时");
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              // console.log("error-config: ", error.config);
-              console.log("Error: ", error.message);
-            }
-          })
+        } else {
+            // 新增
+            // 发请求新增活动资讯
+            this.$http.post(
+                "/trash/activity/activityMsg/addActivity",
+                {
+                    "activityTitle": child.activity.title,
+                    "activityContent": child.activity.content,
+                    "activityImages": child.activity.image,
+                    "activityTime": child.activity.date,
+                    "blogroll": child.activity.link
+                }
+            )
+            .then(res => {
+                console.log(res.data);
+                this.closeWindow();
+            })
+            .catch(error => {
+                if (error.response) {
+                    this.errmsg = error.response.data.message;
+                } else if (error.request) {
+                    console.log("请求超时");
+                } else {
+                    console.log("Error: ", error.message);
+                }
+            })
+        }
+
       },
       getDataFromServer() {
         // 请求页面数据
@@ -277,29 +286,11 @@
           this.currentPageIndex = resp.data.data.current;
           this.records = resp.data.data.records;
         }).catch(error => {
-          /* 不能使用this对象来操作错误提示,在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
-          *解决办法：
-          *1、用ES6箭头函数，箭头方法可以和父方法共享变量
-          *2、在请求axios外面定义一下 var that=this
-
-          /**
-           * 可将整个error转为json字符串: this.errmsg = error.toJSON().message;
-           * 下面对error进行判断,
-           */
           if (error.response) {
-            // The request was made and the server responded with a status code
-            /*console.log("response-data: ", error.response.data);
-             console.log("response-statues: ", error.response.status);
-             console.log("response-headers: ", error.response.headers);*/
             this.errmsg = error.response.data.message;
           } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
             console.log("请求超时");
           } else {
-            // Something happened in setting up the request that triggered an Error
-            // console.log("error-config: ", error.config);
             console.log("Error: ", error.message);
           }
         })
@@ -313,16 +304,8 @@
         // 把oldBrand变为null
         this.oldActivity = {};
       },
-      async editGoods(oldActivity) {
-        // 发起请求，查询商品详情和skus
-        /*oldActivity.spuDetail = await this.$http.loadData("/item/spu/detail/" + oldActivity.id);
-        oldActivity.skus = await this.$http.loadData("/item/sku/list?id=" + oldActivity.id);*/
-        // 修改标记
-        this.isEdit = true;
-        // 控制弹窗可见：
-        this.show = true;
-      },
       closeWindow() {
+        this.isEdit = false;
         // 重新加载数据
         this.getDataFromServer();
         // 关闭窗口

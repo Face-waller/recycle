@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-toolbar class="elevation-0">
-      <v-btn color="primary" @click="addActivities">新增商品分类</v-btn>
+      <v-btn color="primary" @click="addCategories">新增商品分类</v-btn>
       <v-spacer/>
       <v-flex xs3>
         状态：
@@ -38,11 +38,13 @@
       </el-table-column>
       <el-table-column
         prop="productKindType"
-        label="商品种类类型"
+        label="商品分类类型"
+        :formatter="typeFormat"
         width="200">
       </el-table-column>
       <el-table-column
-        prop="state" :formatter="stateFormat"
+        prop="state"
+        :formatter="stateFormat"
         label="状态"
         width="120">
       </el-table-column>
@@ -80,7 +82,7 @@
       <v-card>
         <!--对话框的标题-->
         <v-toolbar dense dark color="primary">
-          <v-toolbar-title>{{isEdit ? '修改' : '新增'}}活动资讯</v-toolbar-title>
+          <v-toolbar-title>{{isEdit ? '修改' : '新增'}}商品分类</v-toolbar-title>
           <v-spacer/>
           <!--关闭窗口的按钮-->
           <v-btn icon @click="closeWindow">
@@ -89,12 +91,12 @@
         </v-toolbar>
         <!--对话框的内容，表单-->
         <v-card-text class="px-3" style="height: 600px">
-          <ActivityForm ref="ch" :oldActivity="oldActivity" :step="step" @close="closeWindow" :is-edit="isEdit"/>
+          <CategoryForm ref="ch" :oldCategory="oldCategory" :step="step" @close="closeWindow" :is-edit="isEdit"/>
         </v-card-text>
         <!--底部按钮，用来操作步骤线-->
         <v-card-actions class="elevation-10">
           <v-flex class="xs3 mx-auto">
-            <v-btn @click="addActivity" color="primary">提交</v-btn>
+            <v-btn @click="addCategory" color="primary">提交</v-btn>
             <v-btn @click="closeWindow" color="info">取消</v-btn>
           </v-flex>
         </v-card-actions>
@@ -105,7 +107,7 @@
 
 <script>
   // 导入自定义的表单组件
-  import ActivityForm from './ActivityForm'
+  import CategoryForm from './CategoryForm'
 
   export default {
     inject:['reload'],      // 注入App里的reload方法
@@ -117,11 +119,11 @@
           currentPageIndex:1, //当前页码
           records: [{
               "id": 0,  //主键id
-              "productName": "数码产品",  //商品种类名称
+              "productName": "",  //商品种类名称
               "productKindType": 1,
-              "state": 1,  //活动种类状态
-              "createTime": "2020-04-06 21:58:30",  //创建时间
-              "modifyTime": "2020-04-06 21:58:30"  //修改时间
+              "state": 0,  //活动种类状态
+              "createTime": "",  //创建时间
+              "modifyTime": ""  //修改时间
         }],
         filter: {
           saleable: true, // 在用/禁用
@@ -129,7 +131,7 @@
         },
         loading: true, // 是否在加载中
         show: false,// 控制对话框的显示
-        oldActivity: {}, // 即将被编辑的活动信息
+        oldCategory: {}, // 即将被编辑的活动信息
         isEdit: false, // 是否是编辑
         step: 1, // 子组件中的步骤线索引，默认为1
       }
@@ -167,20 +169,20 @@
             this.getDataFromServer()
         },
         // 某一条编辑的点击事件
-        handleClick(oldActivity) {
-            console.log(oldActivity);
+        handleClick(oldCategory) {
+            console.log(oldCategory);
             // 修改标记
             this.isEdit = true;
             // 控制弹窗可见：
             this.show = true;
-            this.oldActivity = oldActivity;
+            this.oldCategory = oldCategory;
         },
         // 某一条禁用的点击事件
         handle2Click(id) {
             console.log(id);
             // 发起请求
             this.$http.get(
-                "/trash/activity/activityMsg/delete?activityId="+id
+                "/trash/product/productKind/delete?productKindId="+id
             )
             .then(res => {
                 alert("禁用成功!")
@@ -188,57 +190,59 @@
                 this.reload();
             })
         },
-        addActivity() {
+        addCategory() {
             // 获取表单数据
             let child =this.$refs.ch;
-            /*let data = new FormData();
-            data.append("activityTitle",child.activity.title);
-            data.append("activityContent",child.activity.content);
-            data.append("activityImages",child.activity.image);
-            data.append("activityTime",child.activity.date);
-            data.append("blogroll",child.activity.link);*/
-            // 发请求新增活动资讯
-            this.$http.post(
-                "/trash/activity/activityMsg/addActivity",
-                {
-                    "activityTitle": child.activity.title,
-                    "activityContent": child.activity.content,
-                    "activityImages": child.activity.image,
-                    "activityTime": child.activity.date,
-                    "blogroll": child.activity.link
-                }
-            )
-            .then(res => {
-                console.log(res.data);
-                this.closeWindow();
-            })
-            .catch(error => {
-                /* 不能使用this对象来操作错误提示,在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
-                *解决办法：
-                *1、用ES6箭头函数，箭头方法可以和父方法共享变量
-                *2、在请求axios外面定义一下 var that=this
-
-                /**
-                 * 可将整个error转为json字符串: this.errmsg = error.toJSON().message;
-                 * 下面对error进行判断,
-                 */
-                if(error.response) {
-                    // The request was made and the server responded with a status code
-                    /*console.log("response-data: ", error.response.data);
-                     console.log("response-statues: ", error.response.status);
-                     console.log("response-headers: ", error.response.headers);*/
-                    this.errmsg = error.response.data.message;
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    console.log("请求超时");
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    // console.log("error-config: ", error.config);
-                    console.log("Error: ", error.message);
-                }
-            })
+            // 判断是新增还是修改
+            if (this.isEdit) {
+                // 修改
+                // 发请求修改商品分类
+                type = child.category.type === '积分兑换商品种类' ? 1 : child.category.type === '捐赠商品种类' ? 2 : '';
+                this.$http.post(
+                    "/trash/product/productKind/update",
+                    {
+                        "productName": child.category.name,
+                        "productKindType": type,
+                    }
+                )
+                .then(res => {
+                    console.log(res.data);
+                    this.closeWindow();
+                })
+                .catch(error => {
+                    if(error.response) {
+                        this.errmsg = error.response.data.message;
+                    } else if (error.request) {
+                        console.log("请求超时");
+                    } else {
+                        console.log("Error: ", error.message);
+                    }
+                })
+            } else {
+                // 新增
+                // 发请求新增商品分类
+                type = child.category.type === '积分兑换商品种类' ? 1 : child.category.type === '捐赠商品种类' ? 2 : '';
+                this.$http.post(
+                    "/trash/product/productKind/add",
+                    {
+                        "productName": child.category.name,
+                        "productKindType": type,
+                    }
+                )
+                .then(res => {
+                    console.log(res.data);
+                    this.closeWindow();
+                })
+                .catch(error => {
+                    if(error.response) {
+                        this.errmsg = error.response.data.message;
+                    } else if (error.request) {
+                        console.log("请求超时");
+                    } else {
+                        console.log("Error: ", error.message);
+                    }
+                })
+            }
         },
         getDataFromServer() {
             // 请求页面数据
@@ -259,52 +263,26 @@
                 this.currentPageIndex = resp.data.data.current;
                 this.records = resp.data.data.records;
             }).catch(error => {
-                /* 不能使用this对象来操作错误提示,在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
-                *解决办法：
-                *1、用ES6箭头函数，箭头方法可以和父方法共享变量
-                *2、在请求axios外面定义一下 var that=this
-
-                /**
-                 * 可将整个error转为json字符串: this.errmsg = error.toJSON().message;
-                 * 下面对error进行判断,
-                 */
                 if(error.response) {
-                    // The request was made and the server responded with a status code
-                    /*console.log("response-data: ", error.response.data);
-                     console.log("response-statues: ", error.response.status);
-                     console.log("response-headers: ", error.response.headers);*/
                     this.errmsg = error.response.data.message;
                 } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
                     console.log("请求超时");
                 } else {
-                    // Something happened in setting up the request that triggered an Error
-                    // console.log("error-config: ", error.config);
                     console.log("Error: ", error.message);
                 }
             })
 
         },
-        addActivities() {
+        addCategories() {
             // 修改标记
             this.isEdit = false;
             // 控制弹窗可见：
             this.show = true;
             // 把oldBrand变为null
-            this.oldActivity = {};
-        },
-        async editGoods(oldActivity) {
-            // 发起请求，查询商品详情和skus
-            /*oldActivity.spuDetail = await this.$http.loadData("/item/spu/detail/" + oldActivity.id);
-            oldActivity.skus = await this.$http.loadData("/item/sku/list?id=" + oldActivity.id);*/
-            // 修改标记
-            this.isEdit = true;
-            // 控制弹窗可见：
-            this.show = true;
+            this.oldCategory= {};
         },
         closeWindow() {
+            this.isEdit = false;
             // 重新加载数据
             this.getDataFromServer();
             // 关闭窗口
@@ -313,15 +291,22 @@
             this.step = 1;
         },
         stateFormat(row,column){
-          if (row.state === 0){
-            return '禁用'
-          }else if (row.state === 1){
-            return '在用'
-          }
+            if (row.state === 0){
+              return '禁用'
+            }else if (row.state === 1){
+              return '在用'
+            }
+        },
+        typeFormat(row,column) {
+            if (row.productKindType === 1) {
+                return '积分兑换商品种类'
+            } else if (row.productKindType === 2) {
+                return '捐赠商品种类'
+            }
         }
     },
     components: {
-      ActivityForm
+        CategoryForm
     }
   }
 </script>
