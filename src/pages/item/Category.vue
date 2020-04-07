@@ -197,7 +197,7 @@
             if (this.isEdit) {
                 // 修改
                 // 发请求修改商品分类
-                type = child.category.type === '积分兑换商品种类' ? 1 : child.category.type === '捐赠商品种类' ? 2 : '';
+                var type = child.category.type === '积分兑换商品种类' ? 1 : child.category.type === '捐赠商品种类' ? 2 : '';
                 this.$http.post(
                     "/trash/product/productKind/update",
                     {
