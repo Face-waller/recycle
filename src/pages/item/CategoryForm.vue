@@ -42,6 +42,7 @@
                 ],
                 valid:false,
                 category: {
+                    id: 0, // 商品分类id
                     name: "", // 标题
                     type: "", // 内容
                 },
@@ -56,6 +57,7 @@
             oldCategory: {// 监控oldCategory的变化
                 handler(val) {
                     if (val) {
+                        this.category.id = val.id;
                         this.category.name = val.productName;
                         this.category.type = val.productKindType;
                     } else {

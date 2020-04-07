@@ -158,13 +158,6 @@
       this.getDataFromServer();
     },
     watch: {
-      /*pagination: { // 监视pagination属性的变化
-        deep: true, // deep为true，会监视pagination的属性及属性中的对象属性变化
-        handler() {
-          // 变化后的回调函数，这里我们再次调用getDataFromServer即可
-          this.getDataFromServer();
-        }
-      },*/
       filter: {// 监视搜索字段
         handler() {
           this.getDataFromServer();
@@ -187,7 +180,7 @@
       },
       // 某一条编辑的点击事件
       handleClick(oldActivity) {
-        console.log(oldActivity);
+        console.log('oldActivity 为: '+ oldActivity);
         // 修改标记
         this.isEdit = true;
         // 控制弹窗可见：
@@ -217,6 +210,7 @@
             this.$http.post(
                 "/trash/activity/activityMsg/update",
                 {
+                    "id": chi.activity.id,
                     "activityTitle": child.activity.title,
                     "activityContent": child.activity.content,
                     "activityImages": child.activity.image,
