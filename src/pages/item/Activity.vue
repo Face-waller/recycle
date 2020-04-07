@@ -168,19 +168,18 @@
     methods: {
       // 分页条数改变
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        // console.log(`每页 ${val} 条`);
         this.pageSize = val;
         this.getDataFromServer()
       },
       // 分页页码改变
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        // console.log(`当前页: ${val}`);
         this.currentPageIndex = val;
         this.getDataFromServer()
       },
       // 某一条编辑的点击事件
       handleClick(oldActivity) {
-        console.log('oldActivity 为: '+ oldActivity);
         // 修改标记
         this.isEdit = true;
         // 控制弹窗可见：
@@ -189,7 +188,6 @@
       },
       // 某一条禁用的点击事件
       handle2Click(id) {
-        console.log(id);
         // 发起请求
         this.$http.get(
           "/trash/activity/activityMsg/delete?activityId=" + id
@@ -219,7 +217,6 @@
                 }
             )
             .then(res => {
-                console.log(res.data);
                 this.closeWindow();
             })
             .catch(error => {
@@ -246,7 +243,6 @@
                 }
             )
             .then(res => {
-                console.log(res.data);
                 this.closeWindow();
             })
             .catch(error => {
@@ -274,7 +270,6 @@
           + "&param=" + param
           + "&state=" + state
         ).then(resp => {
-          console.log(resp.data)
           this.total = resp.data.data.total;
           this.pageSize = resp.data.data.size;
           this.currentPageIndex = resp.data.data.current;

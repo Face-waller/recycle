@@ -68,7 +68,7 @@
             pictureModel(e) {
                 // 获取图片
                 var file = e.target.files[0];
-                console.log(file);
+                // console.log(file);
                 let data = new FormData();
                 data.append("file",file);
                 // 发起请求存图片
