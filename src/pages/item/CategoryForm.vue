@@ -20,7 +20,7 @@
 
 <script>
     export default {
-        name: "goods-form",
+        name: "CategoryForm",
         props: {
             oldCategory: {
                 type: Object

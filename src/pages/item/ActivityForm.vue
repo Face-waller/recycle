@@ -17,12 +17,12 @@
             <input type="file" v-on:change="pictureModel($event)" accept="*" id="crowd_file">
             <br><br>
             <div class="block">
-              <span class="demonstration">默认</span>
+              <span class="demonstration">选择日期时间</span>
               <el-date-picker
                 v-model="activity.date"
                 type="datetime"
                 value-format="yyyy-MM-dd HH:mm:ss"
-                placeholder="选择日期时间">
+                placeholder="">
               </el-date-picker>
             </div>
             <v-text-field label="友情链接" v-model="activity.link" :counter="200" hide-details/>
@@ -35,7 +35,7 @@
 
 <script>
     export default {
-        name: "goods-form",
+        name: "ActivityForm",
         props: {
             oldActivity: {
                 type: Object
@@ -96,7 +96,7 @@
             oldActivity: {// 监控oldActivity的变化
                 handler(val) {
                     if (val) {
-                        this.activity.id = val.id
+                        this.activity.id = val.id;
                         this.activity.title = val.activityTitle;
                         this.activity.content = val.activityContent;
                         this.activity.image = val.activityImages;
@@ -105,6 +105,7 @@
                     } else {
                         // 为空，初始化brand
                         this.activity = {
+                            id: 0,
                             title: "", // 标题
                             content: "", // 内容
                             image: '', //图片
