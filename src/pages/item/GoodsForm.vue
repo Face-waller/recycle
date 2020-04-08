@@ -63,7 +63,6 @@
         },
         data() {
             return {
-                typeIdName:'', // 分类字符串名称
                 items:[], // 商品分类的名称选项
                 goodsTypeItems: [  // 商品分类id和名称对应列表,以便父组件将分类名称转化为分类id
                     {
