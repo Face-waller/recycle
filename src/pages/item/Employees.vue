@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-toolbar class="elevation-0">
-      <v-btn color="primary" @click="addActivities">新增商品</v-btn>
+      <v-btn color="primary" @click="addActivities">新增人员信息</v-btn>
       <v-spacer/>
       <v-flex xs3>
         状态：
@@ -17,7 +17,7 @@
       <v-flex xs3>
         <v-text-field
           append-icon="search"
-          label="请输入商品名称"
+          label="请输入员工姓名"
           single-line
           hide-details
           v-model="filter.search"
@@ -32,73 +32,43 @@
       style="width: 100%">
       <el-table-column
         fixed
-        prop="productKindName"
-        label="分类名称"
+        prop="activityTitle"
+        label="姓名"
         width="200">
       </el-table-column>
       <el-table-column
-        prop="goodsName"
-        label="名称"
-        width="200">
-      </el-table-column>
-      <el-table-column
-        prop="goodsImage"
-        label="图片"
-        width="120">
-        <!-- 图片的显示 -->
-        <template slot-scope="scope">
-          <img :src="'http://127.0.0.1:8001/trash/'+scope.row.goodsImage" min-width="50" height="50"/>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="goodsOriPrice"
-        label="原价"
-        width="200">
-      </el-table-column>
-      <el-table-column
-        prop="goodsCurPrice"
-        label="现价"
-        width="200">
-      </el-table-column>
-      <el-table-column
-        prop="integral"
-        label="兑换所需积分"
-        width="200">
-      </el-table-column>
-      <el-table-column
-        prop="goodsTotal"
-        label="商品总数"
+        prop="activityContent"
+        label="电话"
         width="300">
       </el-table-column>
       <el-table-column
-        prop="goodsStock"
-        label="商品库存"
-        width="200">
+        prop="activityContent"
+        label="身份证号"
+        width="300">
       </el-table-column>
       <el-table-column
-        prop="putAwayTime"
-        label="上架时间"
-        width="200">
-      </el-table-column>
-      <el-table-column
-        prop="soldOutTime"
-        label="下架时间"
-        width="200">
+        prop="activityImages"
+        label="照片"
+        width="300">
+        <!-- 图片的显示 -->
+        <template slot-scope="scope">
+          <img :src="'http://127.0.0.1:8001/trash/'+scope.row.activityImages" min-width="50" height="50"/>
+        </template>
       </el-table-column>
       <el-table-column
         prop="state"
         :formatter="stateFormat"
         label="状态"
-        width="120">
+        width="200">
       </el-table-column>
       <el-table-column
         fixed="right"
         label="操作"
-        width="200">
+        width="300">
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
           <template v-if="scope.row.state === 1">
-            <el-button @click="handle2Click(scope.row.id)" type="text" size="small">禁用</el-button>
+            <el-button @click="handle2Click(scope.row.id)" type="text" size="small">离职</el-button>
           </template>
         </template>
       </el-table-column>
@@ -120,7 +90,7 @@
       <v-card>
         <!--对话框的标题-->
         <v-toolbar dense dark color="primary">
-          <v-toolbar-title>{{isEdit ? '修改' : '新增'}}商品</v-toolbar-title>
+          <v-toolbar-title>{{isEdit ? '修改' : '新增'}}员工信息</v-toolbar-title>
           <v-spacer/>
           <!--关闭窗口的按钮-->
           <v-btn icon @click="closeWindow">
@@ -129,7 +99,7 @@
         </v-toolbar>
         <!--对话框的内容，表单-->
         <v-card-text class="px-3" style="height: 600px">
-          <GoodsForm ref="ch" :oldGoods="oldGoods" :step="step" @close="closeWindow" :is-edit="isEdit"/>
+          <ActivityForm ref="ch" :oldActivity="oldActivity" :step="step" @close="closeWindow" :is-edit="isEdit"/>
         </v-card-text>
         <!--底部按钮，用来操作步骤线-->
         <v-card-actions class="elevation-10">
@@ -145,38 +115,27 @@
 
 <script>
     // 导入自定义的表单组件
-    import GoodsForm from './GoodsForm'
+    import ActivityForm from './ActivityForm'
 
     export default {
         inject: ['reload'],      // 注入App里的reload方法
-        name: "Goods",
+        name: "Activity",
         data() {
             return {
-                fatherGoodsTypeItems: [ // 所有商品分类信息
-                    {
-                        id : 0,
-                        productName : ''
-                    }
-                ],
                 total: 1, // 总条数
                 pageSize: 5, // 每页数量
                 currentPageIndex: 1, //当前页码
                 records: [{
-                    id: 0, // 商品id
-                    typeId: 0, // 商品分类id
-                    productKindName:0, // 商品分类名称
-                    goodsName: "", // 商品名称
-                    goodsImage: "", // 商品图片
-                    goodsOriPrice: '', // 商品原价
-                    goodsCurPrice:'', // 商品现价
-                    integral:'', // 积分
-                    goodsTotal:0, // 总数
-                    goodsStock:0, // 库存
-                    putAwayTime:'', // 上架时间
-                    soldOutTime:'',  // 下架时间
-                    state:0 , // 状态-在用/下架
-                    createTime:'',
-                    modifyTime:'',
+                    "id": 0,  //上门回收物品工作人员信息id
+                    "name": "",  //姓名
+                    "phoneNumber": "", //电话
+                    "activityImages": "", //图片地址
+                    "activityTime": "2020-02-18 18:53:00",  //活动时间
+                    "blogroll": "http://www.baidu.com",  //友情链接
+                    "userId": 0,  //创建人
+                    "state": 0,  //活动状态
+                    "createTime": "",  //创建时间
+                    "modifyTime": ""  //修改时间
                 }],
                 filter: {
                     saleable: true, // 在用/禁用
@@ -184,7 +143,7 @@
                 },
                 loading: true, // 是否在加载中
                 show: false,// 控制对话框的显示
-                oldGoods: {}, // 即将被编辑的商品信息
+                oldActivity: {}, // 即将被编辑的活动信息
                 isEdit: false, // 是否是编辑
                 step: 1, // 子组件中的步骤线索引，默认为1
             }
@@ -192,8 +151,6 @@
         mounted() { // 渲染后执行
             // 查询数据
             this.getDataFromServer();
-            // 查询所有分类信息
-            this.getAllGoodsTypeInfo();
         },
         watch: {
             filter: {// 监视搜索字段
@@ -217,18 +174,18 @@
                 this.getDataFromServer()
             },
             // 某一条编辑的点击事件
-            handleClick(oldGoods) {
+            handleClick(oldActivity) {
                 // 修改标记
                 this.isEdit = true;
                 // 控制弹窗可见：
                 this.show = true;
-                this.oldGoods = oldGoods;
+                this.oldActivity = oldActivity;
             },
             // 某一条禁用的点击事件
             handle2Click(id) {
                 // 发起请求
                 this.$http.get(
-                    "/trash/product/product/deleteProduct?productId" + id
+                    "/trash/activity/activityMsg/delete?activityId=" + id
                 )
                     .then(res => {
                         alert("禁用成功!");
@@ -236,48 +193,22 @@
                         this.reload();
                     })
             },
-            getAllGoodsTypeInfo() {
-                // 发起请求
-                this.$http.get(
-                    "/trash/product/productKind/selectAll?productKindType=1"
-                ).then(res => {
-                    res.data.data.forEach(g => this.fatherGoodsTypeItems.push(g))
-                });
-                this.$http.get(
-                    "/trash/product/productKind/selectAll?productKindType=2"
-                ).then(res => {
-                    res.data.data.forEach(g => this.fatherGoodsTypeItems.push(g))
-                })
-            },
             addActivity() {
                 // 获取表单数据
                 let child = this.$refs.ch;
                 // 判断是新增还是修改
                 if (this.isEdit) {
                     // 修改
-                    // 发请求修改商品
-                    // 获取商品分类值
-                    var typeNameId;
-                    this.fatherGoodsTypeItems.forEach(f => function () {
-                        if (f.productName === child.typeIdName) {
-                            typeNameId = f.id;
-                            return null;
-                        }
-                    });
+                    // 发请求修改活动资讯
                     this.$http.post(
-                        "/trash/product/product/update",
+                        "/trash/activity/activityMsg/update",
                         {
-                            "id": child.goods.id,
-                            "productKindId": typeNameId,
-                            "productName": child.goods.goodsName,
-                            "productImages": child.goods.goodsImage,
-                            "commodityPrice": child.goods.goodsOriPrice,
-                            "productPrice": child.goods.goodsCurPrice,
-                            "needPoints": child.goods.integral,
-                            "totalNumber": child.goods.goodsTotal,
-                            "stockNumber": child.goods.goodsStock,
-                            "productPutawayTime": child.goods.putAwayTime,
-                            "productSoldOutTime": child.goods.soldOutTime,
+                            "id": child.activity.id,
+                            "activityTitle": child.activity.title,
+                            "activityContent": child.activity.content,
+                            "activityImages": child.activity.image,
+                            "activityTime": child.activity.date,
+                            "blogroll": child.activity.link
                         }
                     )
                         .then(res => {
@@ -295,27 +226,15 @@
 
                 } else {
                     // 新增
-                    // 发请求新增商品
-                    // 获取商品分类值
-                    var typeNameId;
-                    this.fatherGoodsTypeItems.forEach(f => function () {
-                        if (f.productName === child.typeIdName) {
-                            typeNameId = f.id;
-                        }
-                    });
+                    // 发请求新增活动资讯
                     this.$http.post(
-                        "/trash/product/product/addProduct",
+                        "/trash/activity/activityMsg/addActivity",
                         {
-                            "productKindId": typeNameId,
-                            "productName": child.goods.goodsName,
-                            "productImages": child.goods.goodsImage,
-                            "commodityPrice": child.goods.goodsOriPrice,
-                            "productPrice": child.goods.goodsCurPrice,
-                            "needPoints": child.goods.integral,
-                            "totalNumber": child.goods.goodsTotal,
-                            "stockNumber": child.goods.goodsStock,
-                            "productPutawayTime": child.goods.putAwayTime,
-                            "productSoldOutTime": child.goods.soldOutTime,
+                            "activityTitle": child.activity.title,
+                            "activityContent": child.activity.content,
+                            "activityImages": child.activity.image,
+                            "activityTime": child.activity.date,
+                            "blogroll": child.activity.link
                         }
                     )
                         .then(res => {
@@ -341,20 +260,15 @@
                 var param = this.filter.search === null ? " " : this.filter.search;
                 var state = this.filter.saleable === true ? 1 : 0;
                 this.$http.get(
-                    "/trash/product/product/productList?pageIndex=" + currentPageIndex
-                    + "&pageSize=" + pageSize
+                    "/trash/activity/activityMsg/list?pageSize=" + pageSize
+                    + "&pageIndex=" + currentPageIndex
                     + "&param=" + param
                     + "&state=" + state
-                    + "&productKindId="
-
                 ).then(resp => {
                     this.total = resp.data.data.total;
                     this.pageSize = resp.data.data.size;
                     this.currentPageIndex = resp.data.data.current;
-                    // 接收到的json键名和data里的定义的不同
-                    for(var itemIndex in resp.data.data.records) {
-                        this.records[itemIndex] = resp.data.data.records[itemIndex];
-                    }
+                    this.records = resp.data.data.records;
                 }).catch(error => {
                     if (error.response) {
                         this.errmsg = error.response.data.message;
@@ -371,8 +285,8 @@
                 this.isEdit = false;
                 // 控制弹窗可见：
                 this.show = true;
-                // 把oldGoods变为null
-                this.oldGoods = {};
+                // 把oldBrand变为null
+                this.oldActivity = {};
             },
             closeWindow() {
                 this.isEdit = false;
@@ -385,14 +299,14 @@
             },
             stateFormat(row,column){
                 if (row.state === 0){
-                    return '下架'
+                    return '禁用'
                 }else if (row.state === 1){
                     return '在用'
                 }
-            },
+            }
         },
         components: {
-            GoodsForm
+            ActivityForm
         }
     }
 </script>

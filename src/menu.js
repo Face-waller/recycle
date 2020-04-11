@@ -19,9 +19,7 @@ var menus = [
     path:"/item",
     items: [
       { title: "分类管理", path: "/Category" },
-      // { title: "品牌管理", path: "/brand" },
-      { title: "商品列表", path: "/list" },
-      // { title: "规格参数", path: "/specification" }
+      { title: "商品列表", path: "/List" },
     ]
   },
   {
@@ -29,8 +27,7 @@ var menus = [
     title: "工作人员管理",
     path:"/user",
     items: [
-      { title: "会员管理", path: "/statistics" },
-      // { title: "会员管理", path: "/list" }
+      { title: "工作人员", path: "/Employees" },
     ]
   },
   /*{

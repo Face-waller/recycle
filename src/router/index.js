@@ -24,11 +24,9 @@ export default new Router({
       children:[ // 其它所有组件都是 Layout的子组件
         route("/index/dashboard","/Dashboard","Dashboard"),
         route("/item/category",'/item/Category',"Category"),
-        route("/item/brand",'/item/Brand',"Brand"),
-        route("/item/list",'/item/Goods',"Goods"),
+        route("/item/List",'/item/Goods',"Goods"),
         route("/item/Activity",'/item/Activity',"Activity"),
-        route("/item/specification",'/item/specification/Specification',"Specification"),
-        route("/user/statistics",'/item/Statistics',"Statistics"),
+        route("/user/Employees",'/item/Employees',"Employees"),
         route("/trade/promotion",'/trade/Promotion',"Promotion")
       ]
     }

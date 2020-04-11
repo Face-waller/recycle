@@ -131,6 +131,7 @@
             }
         },
         mounted() {
+            this.loadGoodsType();
         },
         watch: {
             oldGoods: {// 监控oldGoods的变化
