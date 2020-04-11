@@ -8,7 +8,7 @@
             <v-select
               :items="items"
               label="请选择商品分类"
-              v-model="typeIdName"
+              v-model="productKindName"
             ></v-select>
             <v-text-field label="名称" v-model="goods.goodsName" :counter="200"  hide-details/>
             <v-flex xs3>
@@ -139,6 +139,7 @@
                     if (val) {
                         this.goods.id = val.id;
                         this.goods.typeId = val.typeId;
+                        this.goods.productKindName = val.productKindName;
                         this.goods.goodsName = val.goodsName;
                         this.goods.goodsImage = val.goodsImage;
                         this.goods.goodsOriPrice = val.goodsOriPrice;
@@ -153,6 +154,7 @@
                         this.goods = {
                             id: 0,
                             typeId: 0, // 商品分类id
+                            productKindName: '',
                             goodsName: "", // 商品名称
                             goodsImage: "", // 商品图片
                             goodsOriPrice: '', // 商品原价
@@ -169,15 +171,6 @@
             }
         },
         computed: {
-            // 商品分类名称和id直接的转化
-            typeIdName: function () {
-                this.goodsTypeItems.forEach(t => function () {
-                    if (t.id === this.goods.typeId) {
-                        return t.productName;
-                    }
-                });
-                return "<未识别的分类>";
-            }
         }
     };
 </script>
