@@ -6,11 +6,14 @@
       <v-flex xs3>
         状态：
         <v-btn-toggle mandatory v-model.lazy="filter.saleable">
-          <v-btn flat :value="true">
-            在用
+          <v-btn flat :value="1">
+            空闲
           </v-btn>
-          <v-btn flat :value="false">
-            禁用
+          <v-btn flat :value="2">
+            接单中
+          </v-btn>
+          <v-btn flat :value="0">
+            离职
           </v-btn>
         </v-btn-toggle>
       </v-flex>
@@ -128,7 +131,7 @@
                 records: [{
                     "id": 0,  //上门回收物品工作人员信息id
                     "name": "",  //姓名
-                    "phoneNumber": "", //电话
+                    "phoneNumber": 0, //电话
                     "idCard": 0, //身份证号
                     "images": "", //照片地址
                     "state": 0,  //状态(0、离职；1、空闲；2、接单中)
@@ -136,7 +139,7 @@
                     "modifyTime": ""  //修改时间
                 }],
                 filter: {
-                    saleable: true, // 在用/禁用
+                    saleable: 1, // 在用/禁用
                     search: '', // 搜索过滤字段
                 },
                 loading: true, // 是否在加载中
@@ -179,14 +182,14 @@
                 this.show = true;
                 this.oldActivity = oldActivity;
             },
-            // 某一条禁用的点击事件
+            // 某一条离职的点击事件
             handle2Click(id) {
                 // 发起请求
                 this.$http.get(
-                    "/trash/activity/activityMsg/delete?activityId=" + id
+                    "/trash/product/workerMessage/editState?workerId=" + id
                 )
                     .then(res => {
-                        alert("禁用成功!");
+                        alert("操作成功!");
                         // 刷新当前页面
                         this.reload();
                     })
@@ -199,14 +202,13 @@
                     // 修改
                     // 发请求修改活动资讯
                     this.$http.post(
-                        "/trash/activity/activityMsg/update",
+                        "/trash/product/workerMessage/edit",
                         {
-                            "id": child.activity.id,
-                            "activityTitle": child.activity.title,
-                            "activityContent": child.activity.content,
-                            "activityImages": child.activity.image,
-                            "activityTime": child.activity.date,
-                            "blogroll": child.activity.link
+                            "id": child.goods.id,
+                            "name": child.goods.name,
+                            "phoneNumber": child.goods.phoneNumber,
+                            "idCard": child.goods.idCard,
+                            "images": child.goods.images,
                         }
                     )
                         .then(res => {
@@ -226,13 +228,12 @@
                     // 新增
                     // 发请求新增活动资讯
                     this.$http.post(
-                        "/trash/activity/activityMsg/addActivity",
+                        "trash/product/workerMessage/add",
                         {
-                            "activityTitle": child.activity.title,
-                            "activityContent": child.activity.content,
-                            "activityImages": child.activity.image,
-                            "activityTime": child.activity.date,
-                            "blogroll": child.activity.link
+                            "name": child.goods.name,
+                            "phoneNumber": child.goods.phoneNumber,
+                            "idCard": child.goods.idCard,
+                            "images": child.goods.images,
                         }
                     )
                         .then(res => {
@@ -256,12 +257,12 @@
                 var pageSize = this.pageSize;
                 var currentPageIndex = this.currentPageIndex;
                 var param = this.filter.search === null ? " " : this.filter.search;
-                var state = this.filter.saleable === true ? 1 : 0;
+                var state = this.filter.saleable;
                 this.$http.get(
-                    "/trash/activity/activityMsg/list?pageSize=" + pageSize
-                    + "&pageIndex=" + currentPageIndex
-                    + "&param=" + param
+                    "/trash/product/workerMessage/list?param=" + param
                     + "&state=" + state
+                    + "&pageIndex=" + currentPageIndex
+                    + "&pageSize=" + pageSize
                 ).then(resp => {
                     this.total = resp.data.data.total;
                     this.pageSize = resp.data.data.size;
@@ -297,9 +298,11 @@
             },
             stateFormat(row,column){
                 if (row.state === 0){
-                    return '禁用'
+                    return '离职'
                 }else if (row.state === 1){
-                    return '在用'
+                    return '空闲'
+                }else if (row.state === 2) {
+                    return '接单中'
                 }
             }
         },
