@@ -5,14 +5,13 @@
       <v-stepper-content step="1">
         <v-flex class="xs10 mx-auto">
           <v-form v-model="valid" ref="basic">
-            <v-text-field label="姓名" v-model="activity.title" :counter="200"  hide-details/>
-            <v-text-field label="电话" v-model="activity.content" :counter="200" hide-details/>
-            <v-text-field label="身份证号" v-model="activity.content" :counter="200" hide-details/>
+            <v-text-field label="姓名" v-model="goods.name" :counter="200"  hide-details/>
+            <v-text-field label="电话" v-model="goods.phoneNumber" :counter="200"  hide-details/>
+            <v-text-field label="身份证号" v-model="goods.idCard" :counter="200"  hide-details/>
             <v-flex xs3>
               <span style="font-size: 16px; color: #444">头像：</span>
             </v-flex>
             <input type="file" v-on:change="pictureModel($event)" accept="*" id="crowd_file">
-            <br><br>
           </v-form>
         </v-flex>
       </v-stepper-content>
@@ -22,9 +21,9 @@
 
 <script>
     export default {
-        name: "ActivityForm",
+        name: "EmployeesForm",
         props: {
-            oldActivity: {
+            oldGoods: {
                 type: Object
             },
             isEdit: {
@@ -38,15 +37,23 @@
         },
         data() {
             return {
+                items:[], // 商品分类的名称选项
+                goodsTypeItems: [  // 商品分类id和名称对应列表,以便父组件将分类名称转化为分类id
+                    {
+                        id : 0,
+                        productName : ''
+                    }
+                ],
                 valid:false,
-                activity: {
-                    id: 0, // 活动id
-                    title: "", // 标题
-                    content: "", // 内容
-                    image: '', //图片
-                    date:'', //时间
-                    link:'', //链接
-
+                goods: {
+                    "id": 0,  //上门回收物品工作人员信息id
+                    "name": "",  //姓名
+                    "phoneNumber": "", //电话
+                    "idCard": 0, //身份证号
+                    "images": "", //照片地址
+                    "state": 0,  //状态(0、离职；1、空闲；2、接单中)
+                    "createTime": "",  //创建时间
+                    "modifyTime": ""  //修改时间
                 },
 
             };
@@ -64,7 +71,7 @@
                     data
                 )
                     .then(res => {
-                        this.activity.image = res.data.data;
+                        this.goods.images = res.data.data;
                     })
                     .catch(error => {
                         if(error.response) {
@@ -80,24 +87,28 @@
         mounted() {
         },
         watch: {
-            oldActivity: {// 监控oldActivity的变化
+            oldGoods: {// 监控oldGoods的变化
                 handler(val) {
                     if (val) {
-                        this.activity.id = val.id;
-                        this.activity.title = val.activityTitle;
-                        this.activity.content = val.activityContent;
-                        this.activity.image = val.activityImages;
-                        this.activity.date = val.activityTime;
-                        this.activity.link = val.blogroll;
+                        this.goods.id = val.id;
+                        this.goods.name = val.name;
+                        this.goods.phoneNumber = val.phoneNumber;
+                        this.goods.idCard = val.idCard;
+                        this.goods.images = val.images;
+                        this.goods.state = val.state;
+                        this.goods.createTime = val.createTime;
+                        this.goods.modifyTime = val.modifyTime;
                     } else {
-                        // 为空，初始化brand
-                        this.activity = {
+                        // 为空，初始化goods
+                        this.goods = {
                             id: 0,
-                            title: "", // 标题
-                            content: "", // 内容
-                            image: '', //图片
-                            date:'', //时间
-                            link:'', //链接
+                            name: 0, // 商品分类id
+                            phoneNumber: '',
+                            idCard: "", // 商品名称
+                            images: "", // 商品图片
+                            state: '', // 商品原价
+                            createTime:'', // 商品现价
+                            modifyTime:'', // 积分
                         }
                     }
                 },
@@ -105,7 +116,6 @@
             }
         },
         computed: {
-
         }
     };
 </script>

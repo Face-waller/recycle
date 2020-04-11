@@ -102,7 +102,7 @@
         </v-toolbar>
         <!--对话框的内容，表单-->
         <v-card-text class="px-3" style="height: 600px">
-          <ActivityForm ref="ch" :oldActivity="oldActivity" :step="step" @close="closeWindow" :is-edit="isEdit"/>
+          <EmployeesForm ref="ch" :oldActivity="oldActivity" :step="step" @close="closeWindow" :is-edit="isEdit"/>
         </v-card-text>
         <!--底部按钮，用来操作步骤线-->
         <v-card-actions class="elevation-10">
@@ -118,7 +118,7 @@
 
 <script>
     // 导入自定义的表单组件
-    import ActivityForm from './ActivityForm'
+    import EmployeesForm from './EmployeesForm'
 
     export default {
         inject: ['reload'],      // 注入App里的reload方法
@@ -307,7 +307,7 @@
             }
         },
         components: {
-            ActivityForm
+            EmployeesForm
         }
     }
 </script>
