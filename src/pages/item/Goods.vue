@@ -162,21 +162,21 @@
                 pageSize: 5, // 每页数量
                 currentPageIndex: 1, //当前页码
                 records: [{
-                    id: 0, // 商品id
-                    typeId: 0, // 商品分类id
-                    productKindName:0, // 商品分类名称
-                    goodsName: "", // 商品名称
-                    goodsImage: "", // 商品图片
-                    goodsOriPrice: '', // 商品原价
-                    goodsCurPrice:'', // 商品现价
-                    integral:'', // 积分
-                    goodsTotal:0, // 总数
-                    goodsStock:0, // 库存
-                    putAwayTime:'', // 上架时间
-                    soldOutTime:'',  // 下架时间
-                    state:0 , // 状态-在用/下架
-                    createTime:'',
-                    modifyTime:'',
+                    "id": 0, // 商品id
+                    "typeId": 0, // 商品分类id
+                    "productKindName":0, // 商品分类名称
+                    "goodsName": "", // 商品名称
+                    "goodsImage": "", // 商品图片
+                    "goodsOriPrice": '', // 商品原价
+                    "goodsCurPrice":'', // 商品现价
+                    "integral":'', // 积分
+                    "goodsTotal":0, // 总数
+                    "goodsStock":0, // 库存
+                    "putAwayTime":'', // 上架时间
+                    "soldOutTime":'',  // 下架时间
+                    "state":0 , // 状态-在用/下架
+                    "createTime":'',
+                    "modifyTime":'',
                 }],
                 filter: {
                     saleable: true, // 在用/禁用

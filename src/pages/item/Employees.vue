@@ -129,11 +129,9 @@
                     "id": 0,  //上门回收物品工作人员信息id
                     "name": "",  //姓名
                     "phoneNumber": "", //电话
-                    "activityImages": "", //图片地址
-                    "activityTime": "2020-02-18 18:53:00",  //活动时间
-                    "blogroll": "http://www.baidu.com",  //友情链接
-                    "userId": 0,  //创建人
-                    "state": 0,  //活动状态
+                    "idCard": 0, //身份证号
+                    "images": "", //照片地址
+                    "state": 0,  //状态(0、离职；1、空闲；2、接单中)
                     "createTime": "",  //创建时间
                     "modifyTime": ""  //修改时间
                 }],

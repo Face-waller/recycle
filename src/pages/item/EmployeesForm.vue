@@ -5,27 +5,14 @@
       <v-stepper-content step="1">
         <v-flex class="xs10 mx-auto">
           <v-form v-model="valid" ref="basic">
-            <v-text-field label="标题" v-model="activity.title" :counter="200"  hide-details/>
-            <v-text-field label="内容" v-model="activity.content" :counter="200" hide-details/>
+            <v-text-field label="姓名" v-model="activity.title" :counter="200"  hide-details/>
+            <v-text-field label="电话" v-model="activity.content" :counter="200" hide-details/>
+            <v-text-field label="身份证号" v-model="activity.content" :counter="200" hide-details/>
             <v-flex xs3>
-              <span style="font-size: 16px; color: #444">图片：</span>
+              <span style="font-size: 16px; color: #444">头像：</span>
             </v-flex>
-            <!-- <v-flex>
-               <v-upload url="/trash/activity/activityMsg/uploadImg" :multiple="false"
-               />
-             </v-flex>-->
             <input type="file" v-on:change="pictureModel($event)" accept="*" id="crowd_file">
             <br><br>
-            <div class="block">
-              <span class="demonstration">选择日期时间</span>
-              <el-date-picker
-                v-model="activity.date"
-                type="datetime"
-                value-format="yyyy-MM-dd HH:mm:ss"
-                placeholder="">
-              </el-date-picker>
-            </div>
-            <v-text-field label="友情链接" v-model="activity.link" :counter="200" hide-details/>
           </v-form>
         </v-flex>
       </v-stepper-content>
