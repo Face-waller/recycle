@@ -117,7 +117,7 @@
                     data
                 )
                     .then(res => {
-                        this.goods.image = res.data.data;
+                        this.goods.goodsImage = res.data.data;
                     })
                     .catch(error => {
                         if(error.response) {
