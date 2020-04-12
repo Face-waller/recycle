@@ -96,13 +96,6 @@
                 ).then(res => {
                     res.data.data.forEach(n => this.items.push(n.productName))
                 });
-                this.$http.get(
-                    "/trash/product/productKind/selectAll?productKindType=2"
-                ).then(res => {
-                    res.data.data.forEach(n => this.items.push(n.productName))
-                })
-
-
             },
             pictureModel(e) {
                 // 获取图片

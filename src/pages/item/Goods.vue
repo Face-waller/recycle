@@ -243,11 +243,6 @@
                 ).then(res => {
                     res.data.data.forEach(g => this.fatherGoodsTypeItems.push(g))
                 });
-                this.$http.get(
-                    "/trash/product/productKind/selectAll?productKindType=2"
-                ).then(res => {
-                    res.data.data.forEach(g => this.fatherGoodsTypeItems.push(g))
-                })
             },
             addActivity() {
                 // 获取表单数据
