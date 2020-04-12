@@ -26,6 +26,7 @@ export default new Router({
         route("/item/category",'/item/Category',"Category"),
         route("/item/List",'/item/Goods',"Goods"),
         route("/item/Activity",'/item/Activity',"Activity"),
+        route("/item/Donate",'/item/Donate',"Donate"),
         route("/user/Employees",'/item/Employees',"Employees"),
         route("/trade/promotion",'/trade/Promotion',"Promotion")
       ]

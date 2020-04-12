@@ -23,6 +23,14 @@ var menus = [
     ]
   },
   {
+    action: "apps",
+    title: "捐赠物品管理",
+    path:"/item",
+    items: [
+      { title: "捐赠物品列表", path: "/Donate" },
+    ]
+  },
+  {
     action: "people",
     title: "工作人员管理",
     path:"/user",
