@@ -37,51 +37,51 @@
         width="200">
       </el-table-column>
       <el-table-column
-        prop="goodsName"
+        prop="productName"
         label="名称"
         width="200">
       </el-table-column>
       <el-table-column
-        prop="goodsImage"
+        prop="productImages"
         label="图片"
         width="120">
         <!-- 图片的显示 -->
         <template slot-scope="scope">
-          <img :src="'http://127.0.0.1:8001/trash/'+scope.row.goodsImage" min-width="50" height="50"/>
+          <img :src="'http://192.168.43.38:8001/trash/'+scope.row.productImages" min-width="50" height="50"/>
         </template>
       </el-table-column>
       <el-table-column
-        prop="goodsOriPrice"
+        prop="commodityPrice"
         label="原价"
         width="200">
       </el-table-column>
       <el-table-column
-        prop="goodsCurPrice"
+        prop="productPrice"
         label="现价"
         width="200">
       </el-table-column>
       <el-table-column
-        prop="integral"
+        prop="needPoints"
         label="兑换所需积分"
         width="200">
       </el-table-column>
       <el-table-column
-        prop="goodsTotal"
+        prop="totalNumber"
         label="商品总数"
         width="300">
       </el-table-column>
       <el-table-column
-        prop="goodsStock"
+        prop="stockNumber"
         label="商品库存"
         width="200">
       </el-table-column>
       <el-table-column
-        prop="putAwayTime"
+        prop="productPutawayTime"
         label="上架时间"
         width="200">
       </el-table-column>
       <el-table-column
-        prop="soldOutTime"
+        prop="productSoldOutTime"
         label="下架时间"
         width="200">
       </el-table-column>
@@ -163,17 +163,17 @@
                 currentPageIndex: 1, //当前页码
                 records: [{
                     "id": 0, // 商品id
-                    "typeId": 0, // 商品分类id
-                    "productKindName":0, // 商品分类名称
-                    "goodsName": "", // 商品名称
-                    "goodsImage": "", // 商品图片
-                    "goodsOriPrice": '', // 商品原价
-                    "goodsCurPrice":'', // 商品现价
-                    "integral":'', // 积分
-                    "goodsTotal":0, // 总数
-                    "goodsStock":0, // 库存
-                    "putAwayTime":'', // 上架时间
-                    "soldOutTime":'',  // 下架时间
+                    "productKindId": 0, // 商品分类id
+                    "productKindName":"", // 商品分类名称
+                    "productName": "", // 商品名称
+                    "productImages": "", // 商品图片
+                    "commodityPrice": '', // 商品原价
+                    "productPrice":'', // 商品现价
+                    "needPoints":'', // 积分
+                    "totalNumber":0, // 总数
+                    "stockNumber":0, // 库存
+                    "productPutawayTime":'', // 上架时间
+                    "productSoldOutTime":'',  // 下架时间
                     "state":0 , // 状态-在用/下架
                     "createTime":'',
                     "modifyTime":'',
@@ -228,7 +228,7 @@
             handle2Click(id) {
                 // 发起请求
                 this.$http.get(
-                    "/trash/product/product/deleteProduct?productId" + id
+                    "/trash/product/product/deleteProduct?productId=" + id
                 )
                     .then(res => {
                         alert("禁用成功!");
@@ -258,10 +258,9 @@
                     // 发请求修改商品
                     // 获取商品分类值
                     var typeNameId;
-                    this.fatherGoodsTypeItems.forEach(f => function () {
-                        if (f.productName === child.typeIdName) {
+                    this.fatherGoodsTypeItems.forEach(f => {
+                        if(f.productName == child.goods.productKindName) {
                             typeNameId = f.id;
-                            return null;
                         }
                     });
                     this.$http.post(
@@ -269,15 +268,15 @@
                         {
                             "id": child.goods.id,
                             "productKindId": typeNameId,
-                            "productName": child.goods.goodsName,
-                            "productImages": child.goods.goodsImage,
-                            "commodityPrice": child.goods.goodsOriPrice,
-                            "productPrice": child.goods.goodsCurPrice,
-                            "needPoints": child.goods.integral,
-                            "totalNumber": child.goods.goodsTotal,
-                            "stockNumber": child.goods.goodsStock,
-                            "productPutawayTime": child.goods.putAwayTime,
-                            "productSoldOutTime": child.goods.soldOutTime,
+                            "productName": child.goods.productName,
+                            "productImages": child.goods.productImages,
+                            "commodityPrice": child.goods.commodityPrice,
+                            "productPrice": child.goods.productPrice,
+                            "needPoints": child.goods.needPoints,
+                            "totalNumber": child.goods.totalNumber,
+                            "stockNumber": child.goods.stockNumber,
+                            "productPutawayTime": child.goods.productPutawayTime,
+                            "productSoldOutTime": child.goods.productSoldOutTime,
                         }
                     )
                         .then(res => {
@@ -298,8 +297,8 @@
                     // 发请求新增商品
                     // 获取商品分类值
                     var typeNameId;
-                    this.fatherGoodsTypeItems.forEach(f => function () {
-                        if (f.productName === child.typeIdName) {
+                    this.fatherGoodsTypeItems.forEach(f => {
+                        if(f.productName == child.goods.productKindName) {
                             typeNameId = f.id;
                         }
                     });
@@ -307,15 +306,15 @@
                         "/trash/product/product/addProduct",
                         {
                             "productKindId": typeNameId,
-                            "productName": child.goods.goodsName,
-                            "productImages": child.goods.goodsImage,
-                            "commodityPrice": child.goods.goodsOriPrice,
-                            "productPrice": child.goods.goodsCurPrice,
-                            "needPoints": child.goods.integral,
-                            "totalNumber": child.goods.goodsTotal,
-                            "stockNumber": child.goods.goodsStock,
-                            "productPutawayTime": child.goods.putAwayTime,
-                            "productSoldOutTime": child.goods.soldOutTime,
+                            "productName": child.goods.productName,
+                            "productImages": child.goods.productImages,
+                            "commodityPrice": child.goods.commodityPrice,
+                            "productPrice": child.goods.productPrice,
+                            "needPoints": child.goods.needPoints,
+                            "totalNumber": child.goods.totalNumber,
+                            "stockNumber": child.goods.stockNumber,
+                            "productPutawayTime": child.goods.productPutawayTime,
+                            "productSoldOutTime": child.goods.productSoldOutTime,
                         }
                     )
                         .then(res => {
@@ -351,10 +350,7 @@
                     this.total = resp.data.data.total;
                     this.pageSize = resp.data.data.size;
                     this.currentPageIndex = resp.data.data.current;
-                    // 接收到的json键名和data里的定义的不同
-                    for(var itemIndex in resp.data.data.records) {
-                        this.records[itemIndex] = resp.data.data.records[itemIndex];
-                    }
+                    this.records = resp.data.data.records;
                 }).catch(error => {
                     if (error.response) {
                         this.errmsg = error.response.data.message;

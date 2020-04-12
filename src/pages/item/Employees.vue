@@ -35,17 +35,17 @@
       style="width: 100%">
       <el-table-column
         fixed
-        prop="activityTitle"
+        prop="name"
         label="姓名"
         width="200">
       </el-table-column>
       <el-table-column
-        prop="activityContent"
+        prop="phoneNumber"
         label="电话"
         width="300">
       </el-table-column>
       <el-table-column
-        prop="activityContent"
+        prop="idCard"
         label="身份证号"
         width="300">
       </el-table-column>
@@ -55,7 +55,7 @@
         width="300">
         <!-- 图片的显示 -->
         <template slot-scope="scope">
-          <img :src="'http://127.0.0.1:8001/trash/'+scope.row.activityImages" min-width="50" height="50"/>
+          <img :src="'http://192.168.43.38:8001/trash/'+scope.row.images" min-width="50" height="50"/>
         </template>
       </el-table-column>
       <el-table-column
@@ -102,7 +102,7 @@
         </v-toolbar>
         <!--对话框的内容，表单-->
         <v-card-text class="px-3" style="height: 600px">
-          <EmployeesForm ref="ch" :oldActivity="oldActivity" :step="step" @close="closeWindow" :is-edit="isEdit"/>
+          <EmployeesForm ref="ch" :oldGoods="oldGoods" :step="step" @close="closeWindow" :is-edit="isEdit"/>
         </v-card-text>
         <!--底部按钮，用来操作步骤线-->
         <v-card-actions class="elevation-10">
@@ -122,7 +122,7 @@
 
     export default {
         inject: ['reload'],      // 注入App里的reload方法
-        name: "Activity",
+        name: "Employees",
         data() {
             return {
                 total: 1, // 总条数
@@ -144,7 +144,7 @@
                 },
                 loading: true, // 是否在加载中
                 show: false,// 控制对话框的显示
-                oldActivity: {}, // 即将被编辑的活动信息
+                oldGoods: {}, // 即将被编辑的活动信息
                 isEdit: false, // 是否是编辑
                 step: 1, // 子组件中的步骤线索引，默认为1
             }
@@ -175,12 +175,12 @@
                 this.getDataFromServer()
             },
             // 某一条编辑的点击事件
-            handleClick(oldActivity) {
+            handleClick(oldGoods) {
                 // 修改标记
                 this.isEdit = true;
                 // 控制弹窗可见：
                 this.show = true;
-                this.oldActivity = oldActivity;
+                this.oldGoods = oldGoods;
             },
             // 某一条离职的点击事件
             handle2Click(id) {
@@ -285,7 +285,7 @@
                 // 控制弹窗可见：
                 this.show = true;
                 // 把oldBrand变为null
-                this.oldActivity = {};
+                this.oldGoods = {};
             },
             closeWindow() {
                 this.isEdit = false;
