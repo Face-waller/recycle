@@ -2,8 +2,8 @@ var menus = [
   {
     action: "home",
     title: "首页",
-    path:"/index",
-    items: [{ title: "统计", path: "/dashboard" }]
+    path:"/",
+    items: [{ title: "统计", path: "admin" }]
   },
   {
     action: "apps",

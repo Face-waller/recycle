@@ -75,15 +75,6 @@
       <v-flex xs3></v-flex>
       <v-toolbar-title v-text="title"/>
       <v-spacer/>
-
-      <!--&lt;!&ndash; 调色板 &ndash;&gt;
-      <v-btn icon @click.stop="dark = !dark">
-        <v-icon>invert_colors</v-icon>
-      </v-btn>-->
-      <!-- 顶部导航用户菜单 -->
-      <v-btn icon @click.stop="dark = !dark">
-        <v-icon>account_box</v-icon>
-      </v-btn>
     </v-toolbar>
     <!--中间内容主体-->
     <v-content>
@@ -129,6 +120,7 @@
     name: 'App',
     watch: {},
     created() {
+      this.verifyLogin();
       menus.forEach(m => {
         const p1 = m.path.slice(1);
         this.menuMap[p1] = {name: m.title};
@@ -136,6 +128,23 @@
           this.menuMap[p1][i.path.slice(1)] = i.title;
         })
       })
+    },
+    methods: {
+        // 验证是否登录
+        verifyLogin() {
+            this.$http.get("/trash/user/user/verify")
+                .then(res => {
+                    if(res.data.data.isSuperuser !== 1) {
+                        alert("您不是管理员,不能进入后台管理界面!");
+                        this.$router.push("/index");
+                    }
+                })
+                .catch(error => {
+                    console.log("未登录!");
+                    alert("权限不允许您进入后台管理界面!");
+                    this.$router.push("/index");
+                })
+        },
     }
   }
 </script>

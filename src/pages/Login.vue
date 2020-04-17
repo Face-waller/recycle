@@ -6,7 +6,7 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>乐优商城后台管理</v-toolbar-title>
+                <v-toolbar-title>登录</v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
@@ -34,7 +34,7 @@
     </v-content>
     <v-dialog v-model="dialog" width="300px">
       <v-alert icon="warning" color="error" :value="true">
-      用户名和密码不能为空
+        {{errorMsg}}
       </v-alert>
     </v-dialog>
   </v-app>
@@ -42,20 +42,37 @@
 
 <script>
 export default {
+  name:"Login",
   data: () => ({
     username: "",
     password: "",
     dialog: false,
-    e1:false
+    e1:false,
+    errorMsg: ""
   }),
   methods: {
     doLogin() {
       if (!this.username || !this.password) {
         this.dialog = true;
+        this.errorMsg = "用户名和密码不能为空";
         return false;
       }
-      console.log(this.username + " ... " + this.password);
-      this.$router.push("/");
+      // 登录
+      this.$http.post(
+          "/trash/user/user/login",
+          {
+              username: this.username,
+              password: this.password
+          }
+      ).then(res => {
+          // 跳转到首页
+          this.$router.push("/index");
+
+      }).catch(error => {
+          this.dialog = true;
+          this.errorMsg = "用户名或密码错误!";
+          return false;
+      })
     }
   }
 };
