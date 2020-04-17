@@ -141,7 +141,7 @@
                 })
                 .catch(error => {
                     console.log("未登录!");
-                    alert("权限不允许您进入后台管理界面!");
+                    alert("请登录后进入后台管理界面!");
                     this.$router.push("/index");
                 })
         },
