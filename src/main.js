@@ -13,13 +13,18 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/material.css'
 
+Vue.config.productionTip = true // 设置开发模式提醒
+
 
 Vue.use(Vuetify, { theme: config.theme})
 Vue.use(MyComponent)
 Vue.use(ElementUI)
 Vue.prototype.$qs = qs;
 
-Vue.config.productionTip = false
+// 引入mock.js
+if(Vue.config.productionTip){
+  require('./mock/mock.js')
+}
 
 /* eslint-disable no-new */
 new Vue({
