@@ -47,7 +47,7 @@
         width="120">
         <!-- 图片的显示 -->
         <template slot-scope="scope">
-          <img :src="'http://192.168.43.38:8001/trash/'+scope.row.productImages" min-width="50" height="50"/>
+          <img :src="'http://127.0.0.1:8001/trash/'+scope.row.productImages" min-width="50" height="50"/>
         </template>
       </el-table-column>
       <el-table-column
