@@ -100,10 +100,10 @@
                   width="200">
                   <template slot-scope="scope">
                     <template v-if="scope.row.state === 3">
-                      <el-button @click="handleClick(1.1,scope.row.id)" type="text" size="small">下单</el-button>
+                      <el-button @click="handleClick(1.1,scope.row)" type="text" size="small">下单</el-button>
                     </template>
                     <template v-else="scope.row.state ==== 1 || scope.row.state === 0 scope.row.state === 2">
-                      <el-button @click="handleClick(1.2,scope.row.id)" type="text" size="small">查看物流</el-button>
+                      <el-button @click="handleClick(1.2,scope.row)" type="text" size="small">查看物流</el-button>
                     </template>
                   </template>
                 </el-table-column>
@@ -122,14 +122,21 @@
               </div>
               <!--弹出的对话框-->
               <el-dialog
-                title="提示"
+                title="物流"
                 :visible.sync="dialogVisible1"
                 width="30%">
-                <span>物流信息标题: {{logisticsMsgTitle}}</span>
-                <br>
-                <span>物流信息内容: {{logisticsMsgContent}}</span>
-                <br>
-                <span>时间: {{createTime}}</span>
+                <div class="block">
+                  <el-timeline>
+                    <template v-for="(item,i) in logistics1">
+                      <el-timeline-item :timestamp="item.createTime | formatDate('yyyy-MM-dd hh:mm:ss')" placement="top">
+                        <el-card>
+                          <h4>物流信息标题: {{item.logisticsMsgTitle}}</h4>
+                          <p>物流信息内容: {{item.logisticsMsgContent}}</p>
+                        </el-card>
+                      </el-timeline-item>
+                    </template>
+                  </el-timeline>
+                </div>
                 <span slot="footer" class="dialog-footer">
                   <el-button type="primary" @click="dialogVisible1 = false">确 定</el-button>
                 </span>
@@ -186,6 +193,7 @@
                 <el-table-column
                   prop="state"
                   label="订单状态"
+                  :formatter="state2Formatter"
                   width="200">
                 </el-table-column>
                 <el-table-column
@@ -276,12 +284,23 @@
                 <el-table-column
                   prop="state"
                   label="订单状态"
+                  :formatter="state3Formatter"
                   width="200">
                 </el-table-column>
                 <el-table-column
                   prop="createTime"
                   label="创建时间"
                   width="200">
+                </el-table-column>
+                <el-table-column
+                  fixed="right"
+                  label="操作"
+                  width="200">
+                  <template slot-scope="scope">
+                    <template v-if="scope.row.state === 4">
+                      <el-button @click="handleClick(3.1,scope.row)" type="text" size="small">确认收货</el-button>
+                    </template>
+                  </template>
                 </el-table-column>
               </el-table>
               <!--    分页-->
@@ -307,7 +326,7 @@
           <v-card-text>
             <v-card>
               <v-toolbar class="elevation-0">
-                <v-btn color="primary" @click="addActivities">新增地址</v-btn>
+                <v-btn color="#BDBDBD" @click="addActivities">新增地址</v-btn>
               </v-toolbar>
               <v-divider/>
               <!--    表格-->
@@ -339,36 +358,27 @@
                 <el-table-column
                   prop="addressType"
                   label="地址类型"
+                  :formatter="addressTypeFormatter"
                   width="120">
                 </el-table-column>
                 <el-table-column
                   prop="state"
                   label="地址状态"
+                  :formatter="state4Formatter"
                   width="120">
                 </el-table-column>
                 <el-table-column
                   prop="defaultAddressState"
                   label="是否为默认地址"
+                  :formatter="defaultAddressFormatter"
                   width="120">
                 </el-table-column>
               </el-table>
-              <!--&lt;!&ndash;    分页&ndash;&gt;
-              <div class="block" style="text-align: right">
-                <el-pagination
-                  @size-change="handleSizeChange4"
-                  @current-change="handleCurrentChange4"
-                  :current-page.sync="currentPageIndex4"
-                  :page-sizes="[5, 10, 15, 20]"
-                  :page-size="pageSize4"
-                  layout="sizes, prev, pager, next"
-                  :total="total4">
-                </el-pagination>
-              </div>-->
               <!--弹出的对话框-->
               <v-dialog max-width="800" v-model="show4" persistent scrollable>
                 <v-card>
                   <!--对话框的标题-->
-                  <v-toolbar dense dark color="primary">
+                  <v-toolbar dense color="#BDBDBD">
                     <v-toolbar-title>新增地址</v-toolbar-title>
                     <v-spacer/>
                     <!--关闭窗口的按钮-->
@@ -378,13 +388,13 @@
                   </v-toolbar>
                   <!--对话框的内容，表单-->
                   <v-card-text class="px-3" style="height: 600px">
-                    <AddressForm ref="ch" @close="closeWindow(4)"/>
+                    <AddAddressForm ref="ch" @close="closeWindow(4)"/>
                   </v-card-text>
                   <!--底部按钮，用来操作步骤线-->
                   <v-card-actions class="elevation-10">
                     <v-flex class="xs3 mx-auto">
-                      <v-btn @click="addActivity(4)" color="primary">新增</v-btn>
-                      <v-btn @click="closeWindow(4)" color="info">取消</v-btn>
+                      <v-btn @click="addActivity(4)" color="#E0E0E0">新增</v-btn>
+                      <v-btn @click="closeWindow(4)" color="#F5F5F5">取消</v-btn>
                     </v-flex>
                   </v-card-actions>
                 </v-card>
@@ -423,12 +433,16 @@
 
 <script>
   import AddressForm from "./AddressForm";
+  import AddAddressForm from "./AddAddressForm"
+  import { formatDate } from "../../common"
 
     export default {
         name: "MyInfo",
         data() {
             return {
                 /*我的捐赠物品*/
+                productId: null,  // 下单捐赠物品id
+                productNum: null, // 下单捐赠物品数量
                 formLabelWidth: '120px',
                 Addresses:[
                     {
@@ -455,12 +469,28 @@
                         "modifyTime": ''//修改时间
                     }
                 ],
-                Peoples:[
+                Peoples:[{
+                    "id": null, // 上门回收物品工作人员信息id
+                    "name": "", // 工作人员姓名
+                    "createTime": '',
+                    "modifyTime": ''
+                }],
+                // 物流信息数组
+                logistics1:[
+                    {
+                        "id": null, //捐赠物品i物流信息d
+                        "donationGoodsOrderId": null, // 冗余字段不用管
+                        "donateGoodsId": null, // 捐赠物品id
+                        "workerMessageId": null, // 冗余字段，暂不用管
+                        "logisticsMsgTitle": '', // "商品已出库",物流信息标题
 
+                        "logisticsMsgContent": "", // 物流信息内容
+
+                        "createTime": '', // 创建时间
+
+                        "modifyTime": '' // 修改时间
+                    },
                 ],
-                logisticsMsgTitle: '',
-                logisticsMsgContent: '',
-                createTime: '',
                 donatePeopleItems:[ // 工作人员名称列表
 
                 ],
@@ -473,21 +503,21 @@
                 },
                 dialogFormVisible: false, // 下单弹窗
                 dialogVisible1:false, // 查看物流信息弹窗
-                total1: 1, // 总条数
+                total1: null, // 总条数
                 pageSize1: 5, // 每页数量
                 currentPageIndex1: 1, //当前页码
                 records1: [{
-                    "id": 1, // 捐赠物品信息id
-                    "userId": 1, // 用户id
-                    "productKindId": 1, // 商品种类id
+                    "id": Number, // 捐赠物品信息id
+                    "userId": Number, // 用户id
+                    "productKindId": Number, // 商品种类id
                     "donationLogisticsId": null, // 捐赠物品物流信息id
-                    "goodsName": "捐赠商品名称", // 商品名称
-                    "visitTime": "2020-04-07 22:25:30", // 上门取货时间
-                    "donationCount": 10, // 捐赠数量
-                    "acquireScore": 10.00, // 捐赠物品获得的积分
-                    "goodsImages": "/trash/images/98e9d0fa115f4f9ba0f0763b3e2b73b22020-02-14.jpg", // 捐赠物品图片
-                    "remark": "这是一个备注", // 备注
-                    "logisticsStatus": 40, /*捐赠物品物流状态【
+                    "goodsName": "", // 商品名称
+                    "visitTime": "", // 上门取货时间
+                    "donationCount": null, // 捐赠数量
+                    "acquireScore": null, // 捐赠物品获得的积分
+                    "goodsImages": "", // 捐赠物品图片
+                    "remark": "", // 备注
+                    "logisticsStatus": Number, /*捐赠物品物流状态【
                                             * 0、商品已添加
                                                 * 10、等待工作人员上门回收；
                                             * 20、工作人员已上门；
@@ -495,32 +525,32 @@
                                             * 30、捐赠物品已入库；
                                             * 40、捐赠物品已出库；
                                             * 50、捐赠物品已送至需要的人群】*/
-                    "state": 2, // 捐赠物品状态【1、积分审核中，0、禁用；2、积分已发放给用户;3、捐赠物品信息已添加，待下单】
-                    "createTime": "2020-04-07 22:30:34", // 创建时间
-                    "modifyTime": "2020-04-11 21:26:30" // 修改时间
+                    "state": Number, // 捐赠物品状态【1、积分审核中，0、禁用；2、积分已发放给用户;3、捐赠物品信息已添加，待下单】
+                    "createTime": "", // 创建时间
+                    "modifyTime": "" // 修改时间
                 }],
                 filter1: {
                     saleable: 1, //捐赠物品状态【1、积分审核中，0、禁用；2、积分已发放给用户;3、捐赠物品信息已添加，待下单】；必填
                 },
 
                 /*我的捐赠订单*/
-                total2: 1, // 总条数
+                total2: null, // 总条数
                 pageSize2: 5, // 每页数量
                 currentPageIndex2: 1, //当前页码
                 records2: [{
-                    "id": 5, // 捐赠物品订单id
-                    "donationGoodsId": 1, // 捐赠物品id
-                    "userId": 1, // 用户id
+                    "id": null, // 捐赠物品订单id
+                    "donationGoodsId": null, // 捐赠物品id
+                    "userId": null, // 用户id
                     "donationLogisticsId": null, // 捐赠物品物流信息id
-                    "workerMessageId": 1, // 上门工作人员id
-                    "userAddressId": 1, // 用户地址id
-                    "goodsOrderNumber": "20200418180613470", // 捐赠物品订单号
-                    "goodsCount": 10, // 捐赠商品数量
+                    "workerMessageId": null, // 上门工作人员id
+                    "userAddressId": null, // 用户地址id
+                    "goodsOrderNumber": "", // 捐赠物品订单号
+                    "goodsCount": null, // 捐赠商品数量
                     "gainScore": null, // 捐赠商品后获得的积分
                     "gainScoreTime": null, // 获得积分的时间
-                    "state": 1, // 订单状态【0、失效；1、正常；2、已完成】
-                    "createTime": "2020-04-18 18:06:13", // 创建时间
-                    "modifyTime": "2020-04-18 18:06:13" // 修改时间
+                    "state": null, // 订单状态【0、失效；1、正常；2、已完成】
+                    "createTime": "", // 创建时间
+                    "modifyTime": "" // 修改时间
                 }],
                 filter2: {
                     saleable: 1, //订单状态【0、失效；1、正常；2、已完成】必填
@@ -531,19 +561,19 @@
                 pageSize3: 5, // 每页数量
                 currentPageIndex3: 1, //当前页码
                 records3: [{
-                    "id": 1, // 兑换订单主键id
-                    "orderNumber": "20200418172234319216", // 订单号
-                    "productId": 1, // 商品id
-                    "userId": 1, // 用户id
-                    "userAddressId": 1, // 用户地址id
-                    "productCount": 1, // 商品数量
+                    "id": null, // 兑换订单主键id
+                    "orderNumber": null, // 订单号
+                    "productId": null, // 商品id
+                    "userId": null, // 用户id
+                    "userAddressId": null, // 用户地址id
+                    "productCount": null, // 商品数量
                     "deliveryTime": null, // 发货时间
                     "recvingTime": null, // 收货时间
-                    "expendScore": 100, // 消费积分
+                    "expendScore": null, // 消费积分
                     "trackingNumber": null, // 快递单号
-                    "state": 1, // 订单状态【1、在用，2、无效，3、已完成,4、已发货】
-                    "createTime": 1587201755000, // 创建时间
-                    "modifyTime": 1587201755000 // 修改时间
+                    "state": null, // 订单状态【1、在用，2、无效，3、已完成,4、已发货】
+                    "createTime": null, // 创建时间
+                    "modifyTime": null // 修改时间
                 }],
                 filter3: {
                     saleable: 1, //订单状态【1、在用，2、无效，3、已完成,4、已发货】
@@ -552,19 +582,18 @@
                 /* 我的地址*/
                 show4: false,
                 records4: [{
-                    "id": 1, //地址id
-                    "name": "用户地址",//收货/发货姓名
-                    "phone": "1324536524",//手机号
-                    "address": "河南省郑州市金水区",//详细地址
-                    "postcode": "400509",//邮编
-                    "userId": 1,//用户id
-                    "addressType": 1,//地址类型【1、收获地址，2、发货地址】
-                    "state": 1,//地址状态【1、在用，0、归档】
-                    "defaultAddressState": 0,//是否为默认地址【1、是，0不是】
-                    "createTime": 1587203164000,//创建时间
-                    "modifyTime": 1587203164000//修改时间
+                    "id": null, //地址id
+                    "name": null,//收货/发货姓名
+                    "phone": null,//手机号
+                    "address": null,//详细地址
+                    "postcode": null,//邮编
+                    "userId": null,//用户id
+                    "addressType": null,//地址类型【1、收获地址，2、发货地址】
+                    "state": null,//地址状态【1、在用，0、归档】
+                    "defaultAddressState": null,//是否为默认地址【1、是，0不是】
+                    "createTime": null,//创建时间
+                    "modifyTime": null//修改时间
                 }],
-
                 loading4: true, // 是否在加载中
                 oldActivity4: {}, // 即将被编辑的活动信息
                 isEdit4: false, // 是否是编辑
@@ -576,34 +605,52 @@
             },
             // 下单请求
             confirmExchange() {
-                // 获取捐赠物品id
                 // 获取工作人员id
+                var peopleId;
+                this.Peoples.forEach( p => {
+                    if(this.form.selectedPeopleName === p.name) {
+                        peopleId = p.id
+                    }
+                });
                 // 获取地址id
-                // 获取捐赠数量
+                var addId;
+                this.Addresses.forEach( a => {
+                    if (this.form.selectedAddressName === a.address){
+                        addId = a.id;
+                    }
+                });
                 this.$http.post(
                     "/trash/score/donationGoodsOrder/placeOrder",
                     {
-                        "donationGoodsId":r, //捐赠物品id
-                        "workerMessageId":1, //工作人员id
-                        "userAddressId":1, //用户地址id
-                        "goodsCount":10 //捐赠数量
+                        "donationGoodsId":this.productId, //捐赠物品id
+                        "workerMessageId":peopleId, //工作人员id
+                        "userAddressId":addId, //用户地址id
+                        "goodsCount":this.productNum //捐赠数量
                     }
                 ).then(res => {
-
+                    alert("下单成功!");
+                    this.dialogFormVisible = false;
                 }).catch(error => {
-
+                    alert("下单失败")
                 })
             },
-            handleClick(i,r) {
+            handleClick(i,row) {
                 // 判断操作按钮点击类型
                 if (i === 1.1) {
+                    // 下单
                     // 弹窗
                     this.dialogFormVisible = true;
+                    // 存储商品id和捐赠数量
+                    this.productId = row.id;
+                    this.productNum = row.donationCount;
                     // 获取工作人员列表
                     this.$http.get(
-                        "/trash/product/workerMessage/list"
+                        "/trash/product/notBusyWorkerMessage/list"
                     ).then(res => {
-
+                        this.Peoples = res.data.data;
+                        res.data.data.forEach( p => {
+                            this.donatePeopleItems.push(p.name);
+                        })
                     }).catch(error => {
                         alert("获取工作人员列表失败!");
                         this.dialogFormVisible =false;
@@ -622,22 +669,34 @@
                     })
 
                 } else if (i === 1.2) {
+                    // 显示物流
                     // 弹窗
                     this.dialogVisible1 = true;
                     // 请求和显示物流信息
                     this.$http.get(
                         "/trash/product/donationGoods/getLogistics",{
                             params:{
-                                donationsGoodsId:r
+                                donationsGoodsId:row.id
                             }
                         }
                     ).then(res => {
-                        this.logisticsMsgTitle = res.data.data.logisticsMsgTitle;
-                        this. logisticsMsgContent = res.data.data.logisticsMsgContent;
-                        this.createTime = res.data.data.createTime;
+                        this.logistics1 = res.data.data;
                     }).catch(error => {
                         alert("物流信息获取失败!");
                         this.dialogVisible1 = false
+                    })
+                } else if (i === 3.1) {
+                    // 确认收货请求
+                    this.$http.post(
+                        "/trash/score/productOrder/gainGoods",
+                        {
+                            "id":row.id, //兑换订单主键id
+                            "recvingTime":row.recvingTime // 收货时间
+                        }
+                    ).then(res => {
+                        alert("确认收货成功!")
+                    }).catch(error => {
+                        alert("确认收货失败!");
                     })
                 }
             },
@@ -673,12 +732,26 @@
             },
             addActivity(i) {
                 // 判断是哪个弹窗的提交请求
-                if (i === 2) {
-
-                } else if (i === 4) {
-
+                if (i === 4) {
+                    // 获取数据
+                    let child = this.$refs.ch;
+                    this.$http.post(
+                        "/trash/address/userAddress/addAddress",
+                        {
+                            "name":child.goods.name, //收货人姓名
+                            "phone":child.goods.phone, //电话
+                            "address":child.goods.address, //详细地址
+                            "postcode":child.goods.postcode, //邮编
+                        }
+                    ).then(res => {
+                        alert("新增地址成功");
+                        this.show4 = false
+                    }).catch(error => {
+                        alert("新增地址失败")
+                    })
                 }
             },
+            // 加载数据
             getData(val) {
                 // 判断是哪个tab初始页面请求
                 if (val === 1) {
@@ -692,16 +765,59 @@
                             }
                         }
                     ).then(res => {
-                        this.records1 =res.data.data.records;
+                        this.total1 = res.data.data.total;
+                        this.pageSize1 = res.data.data.size;
+                        this.currentPageIndex1 = res.data.data.current;
+                        this.records1 = res.data.data.records;
                     }).catch(error => {
-                        alert("页面数据加载失败!");
+                        alert("页面tab1数据请求失败!");
                     })
                 } else if(val === 2) {
-
+                    var state = this.filter2.saleable;
+                    this.$http.get(
+                        "/trash/score/donationGoodsOrder/getListByUser",{
+                            params:{
+                                pageIndex:this.currentPageIndex2,
+                                pageSize:this.pageSize2,
+                                state:state, //订单状态【0、失效；1、正常；2、已完成】必填
+                            }
+                        }
+                    ).then(res => {
+                        this.total2 = res.data.data.total;
+                        this.pageSize2 = res.data.data.size;
+                        this.currentPageIndex2 = res.data.data.current;
+                        this.records2 = res.data.data.records;
+                    }).catch(error => {
+                        alert("页面tab2数据请求失败!")
+                    })
 
                 } else if(val === 3) {
+                    var state = this.filter3.saleable;
+                    this.$http.get(
+                        "/trash/score/productOrder/getOrderListByUser",{
+                            params:{
+                                pageIndex:this.currentPageIndex3,
+                                pageSize:this.pageSize3,
+                                state:state,//订单状态【1、在用，2、无效，3、已完成,4、已发货】
+                            }
+                        }
+                    ).then(res => {
+                        this.total3 = res.data.data.total;
+                        this.pageSize3 = res.data.data.size;
+                        this.currentPageIndex3 = res.data.data.current;
+                        this.records3 = res.data.data.records;
+                    }).catch(error => {
+                        alert("页面tab3数据请求失败")
+                    })
 
                 } else if(val === 4) {
+                    this.$http.get(
+                        "/trash/address/userAddress/selectByUser"
+                    ).then(res => {
+                        this.records4 = res.data.data;
+                    }).catch(error => {
+                        alert("页面tab4数据请求失败")
+                    })
 
                 } else if(val === 5) {
 
@@ -734,11 +850,52 @@
                 } else if(row.state === 3) {
                     return "捐赠物品信息已添加,待下单";
                 }
+            },
+            state2Formatter(row,column) {
+                if(row.state === 0) {
+                    return "失效";
+                } else if(row.state === 1){
+                    return "正常";
+                } else if(row.state === 2) {
+                    return "已完成";
+                }
+            },
+            state3Formatter(row,column) {
+                if(row.state === 1) {
+                    return "在用";
+                } else if(row.state === 2) {
+                    return "无效";
+                } else if(row.state === 3) {
+                    return "已完成";
+                } else  if(row.state === 4) {
+                    return "已发货"
+                }
+            },
+            defaultAddressFormatter(row,column) {
+                if(row.defaultAddressState === 1) {
+                    return "是";
+                } else if(row.defaultAddressState === 0) {
+                    return "否";
+                }
+            },
+            addressTypeFormatter(row,column) {
+                if(row.addressType === 1) {
+                    return "收货地址";
+                } else if(row.addressType === 2) {
+                    return "发货地址";
+                }
+            },
+            state4Formatter(row,column) {
+                if(row.state === 1) {
+                    return "在用";
+                } else if(row.state === 0) {
+                    return "归档";
+                }
             }
-
         },
         components: {
-            AddressForm
+            AddressForm,
+            AddAddressForm
         },
         watch:{
             // 下单捐赠弹窗关闭
@@ -755,8 +912,33 @@
                     this.getData(1);
                 },
                 deep: true
+            },
+            filter2: {
+                handler() {
+                    this.getData(2);
+                },
+                deep: true
+            },
+            filter3: {
+                handler() {
+                    this.getData(3);
+                },
+                deep: true
             }
-        }
+        },
+        created() {
+            this.getData(1);
+            this.getData(2);
+            this.getData(3);
+            this.getData(4);
+        },
+        filters: {
+            // 时间格式化过滤器
+            formatDate(time,fm) {
+                var date = new Date(time);
+                return formatDate(date, fm);
+            }
+        },
     }
 </script>
 
