@@ -39,7 +39,7 @@
       >
         <!--对话框的标题-->
         <v-toolbar dense color="#BDBDBD">
-          <v-toolbar-title>去捐赠</v-toolbar-title>
+          <v-toolbar-title>保存捐赠信息</v-toolbar-title>
           <v-spacer/>
           <!--关闭窗口的按钮-->
           <v-btn icon @click="closeWindow">
@@ -53,7 +53,7 @@
         <!--底部按钮，用来操作步骤线-->
         <v-card-actions class="elevation-10">
           <v-flex class="xs3 mx-auto">
-            <v-btn @click="addActivity" color="#E0E0E0">提交</v-btn>
+            <v-btn @click="addActivity" color="#E0E0E0">保存</v-btn>
             <v-btn @click="closeWindow" color="#F5F5F5">取消</v-btn>
           </v-flex>
         </v-card-actions>
@@ -119,21 +119,30 @@
         },
         addActivity() {
             // 获取提交的数据
+            let child = this.$refs.ch;
+            //1.捐赠商品种类id
+            var id;
+            child.typeData.forEach( t => {
+                if (t.productName === child.goods.productKindName) {
+                    id = t.id;
+                }
+            });
             // 捐赠物品
             this.$http.post(
                 "/trash/product/donationGoods/add",
                 {
-                    productKindId: "",
-                    goodsName: "",
-                    visitTime: "",
-                    donationCount: "",
-                    goodsImages: "",
-
+                    productKindId: id,
+                    goodsName: child.goods.id,
+                    visitTime: child.goods.visitTime,
+                    donationCount: child.goods.donationCount,
+                    goodsImages: child.goods.goodsImages,
+                    remark:child.goods.remark
                 }
             ).then(res => {
-
+                alert("捐赠成功!");
+                this.show = false;
             }).catch(error => {
-
+                alert("捐赠失败!")
             })
 
         },

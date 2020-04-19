@@ -34,7 +34,7 @@
 
 <script>
     export default {
-        name: "DoDonateForm",
+        name: "AddressForm",
         props: {
             isEdit: {
                 type: Boolean,
