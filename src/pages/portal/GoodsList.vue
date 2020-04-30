@@ -5,7 +5,11 @@
           <el-card :body-style="{ padding: '0px' }" shadow="hover">
             <img :src="'http://127.0.0.1:8001/trash/'+item.productImages" min-width="250" height="250" class="image">
             <div style="padding: 14px;">
-              <span>{{item.productName}}</span>
+              <span>商品名：{{item.productName}}</span>
+              <br>
+              <span style="height:3px;border:none;border-top:3px double red;">原价：{{item.commodityPrice}}</span>
+              <br>
+              <span>现价{{item.productPrice}}</span>
               <br>
               <span>所需积分: {{item.needPoints}}</span>
               <div class="bottom clearfix">

@@ -6,7 +6,7 @@
           <v-carousel-item
             v-for="(item,i) in records"
             :key="i"
-            :src="item.activityImages"
+            :src="'http://127.0.0.1:8001/trash/'+item.activityImages"
             reverse-transition="fade-transition"
             transition="fade-transition"
           ></v-carousel-item>
@@ -18,16 +18,16 @@
       <template v-for="(item,i) in records">
         <el-col :span="4" :offset="3">
           <el-card shadow="hover" body-style="">
-            <p>{{item.activityTitle}}</p>
-            <p>{{item.activityTime}}</p>
-            <p>{{item.activityContent}}</p>
+            <p style="color: crimson;font-size: 30px">{{item.activityTitle}}</p>
+            <p>时间：{{item.activityTime}}</p>
+            <p>内容：{{item.activityContent}}</p>
           </el-card>
         </el-col>
       </template>
     </el-row>
       <div class="roll">
         <template v-for="(item,i) in records">
-            <a target="_blank" :class="'roll'+i" :href="item.blogroll">{{item.activityTitle}}</a>
+            <a target="_blank" :class="'roll'+i" :href="item.blogroll">{{item.blogroll}}</a>
         </template>
       </div>
   </div>
@@ -42,7 +42,7 @@
                     "id": 0,  //主键id
                     "activityTitle": "",  //活动标题
                     "activityContent": "", //活动内容
-                    "activityImages": "", //图片地址
+                    "activityImages": "http://127.0.0.1:8001/trash/"+"", //图片地址
                     "activityTime": "",  //活动时间
                     "blogroll": "",  //友情链接
                     "userId": 0,  //创建人
