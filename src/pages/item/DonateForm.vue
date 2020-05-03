@@ -5,7 +5,7 @@
       <v-stepper-content step="1">
         <v-flex class="xs10 mx-auto">
           <v-form v-model="valid" ref="basic">
-            <v-text-field label="捐赠获得的积分" v-model="activity.content" :counter="200" hide-details/>
+            <v-text-field label="捐赠获得的积分" v-model="activity.acquireScore" :counter="200" hide-details/>
           </v-form>
         </v-flex>
       </v-stepper-content>

@@ -190,7 +190,7 @@
                 },
                 loading: true, // 是否在加载中
                 show: false,// 控制对话框的显示
-                oldActivity: {}, // 即将被编辑的活动信息
+                oldActivityId: Object, // 即将被编辑的活动信息id
                 isEdit: false, // 是否是编辑
                 step: 1, // 子组件中的步骤线索引，默认为1
             }
@@ -297,10 +297,9 @@
                     // 修改
                     // 发请求修改活动资讯
                     this.$http.post(
-                        "/trash/activity/activityMsg/update",
+                        "/trash/product/donationGoods/setGoodsScore",
                     {
-                            "id": child.activity.id,
-                            "userId": child.activity.userId,
+                            "id": this.oldActivity,
                             "acquireScore": child.activity.acquireScore,
                     })
                     .then(res => {
