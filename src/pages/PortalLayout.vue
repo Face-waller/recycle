@@ -132,7 +132,7 @@
                 "/trash/product/donationGoods/add",
                 {
                     productKindId: id,
-                    goodsName: child.goods.id,
+                    goodsName: child.goods.goodsName,
                     visitTime: child.goods.visitTime,
                     donationCount: child.goods.donationCount,
                     goodsImages: child.goods.goodsImages,
