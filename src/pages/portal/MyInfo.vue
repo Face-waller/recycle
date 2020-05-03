@@ -645,7 +645,7 @@
                     this.productNum = row.donationCount;
                     // 获取工作人员列表
                     this.$http.get(
-                        "/trash/product/notBusyWorkerMessage/list"
+                        "/trash/product/workerMessage/selectWorkerMessage"
                     ).then(res => {
                         this.Peoples = res.data.data;
                         res.data.data.forEach( p => {
