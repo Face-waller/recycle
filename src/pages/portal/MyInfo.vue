@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-toolbar flat color="#EFEEEC">
-      <v-toolbar-title>您的积分为: 666</v-toolbar-title>
+      <v-toolbar-title>您的积分为: {{records5}}</v-toolbar-title>
     </v-toolbar>
     <v-tabs vertical>
       <v-tab>
@@ -597,6 +597,9 @@
                 loading4: true, // 是否在加载中
                 oldActivity4: {}, // 即将被编辑的活动信息
                 isEdit4: false, // 是否是编辑
+
+                /* 积分 */
+                records5: Object
             }
         },
         methods: {
@@ -820,7 +823,13 @@
                     })
 
                 } else if(val === 5) {
-
+                    this.$http.get(
+                        "/trash/score/scoreUser/selectUserScore"
+                    ).then(res => {
+                        this.records5 = res.data.data.residuceScore;
+                    }).catch(error => {
+                        alert("积分加载失败")
+                    })
                 }
             },
             logis1Formatter(row,column) {
@@ -931,6 +940,7 @@
             this.getData(2);
             this.getData(3);
             this.getData(4);
+            this.getData(5);
         },
         filters: {
             // 时间格式化过滤器
