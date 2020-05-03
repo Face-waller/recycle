@@ -599,7 +599,7 @@
                 isEdit4: false, // 是否是编辑
 
                 /* 积分 */
-                records5: Object
+                records5: 0
             }
         },
         methods: {
