@@ -299,7 +299,7 @@
                     this.$http.post(
                         "/trash/product/donationGoods/setGoodsScore",
                     {
-                            "id": this.oldActivity,
+                            "id": this.oldActivity.id,
                             "acquireScore": child.activity.acquireScore,
                     })
                     .then(res => {
