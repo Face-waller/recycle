@@ -262,7 +262,7 @@
                             {
                                 "id":id,
                                 "logisticsStatus":40,
-                                "remark":"商品已入库"
+                                "remark":"商品已出库"
                             }
                         ).then(res => {
                             alert("操作成功!");
