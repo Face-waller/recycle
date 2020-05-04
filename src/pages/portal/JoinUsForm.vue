@@ -6,7 +6,7 @@
         <v-flex class="xs10 mx-auto">
           <v-form v-model="valid" ref="basic">
             <v-text-field label="商户名称" v-model="goods.name" :counter="200"  hide-details/>
-            <v-text-field label="姓名" v-model="goods.bossName" :counter="200"  hide-details/>
+            <v-text-field label="老板姓名" v-model="goods.bossName" :counter="200"  hide-details/>
             <v-text-field label="电话" v-model="goods.phone" :counter="200"  hide-details/>
             <v-text-field label="地址" v-model="goods.address" :counter="200"  hide-details/>
             <v-text-field label="回收物品类型" v-model="goods.shopIntroduce" :counter="200"  hide-details/>

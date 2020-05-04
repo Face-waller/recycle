@@ -37,7 +37,6 @@
       <template v-for="(item,i) in joinItems">
         <el-col :span="18" :offset="2">
           <el-card :body-style="{ padding: '0px' }" shadow="hover">
-            <span>No.{{i+1}}</span>
             <img :src="'http://127.0.0.1:8001/trash/'+item.images" min-width="100" height="100" class="image">
             <div style="padding: 14px;">
               <span>老板姓名：{{item.bossName}}</span>
