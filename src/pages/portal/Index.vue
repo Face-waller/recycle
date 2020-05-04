@@ -37,9 +37,11 @@
       <template v-for="(item,i) in joinItems">
         <el-col :span="18" :offset="2">
           <el-card :body-style="{ padding: '0px' }" shadow="hover">
-            <img style="padding: 14px;" :src="'http://127.0.0.1:8001/trash/'+item.images" min-width="100" height="100" class="image">
+            <img style="margin:10px auto;" :src="'http://127.0.0.1:8001/trash/'+item.images" min-width="100" height="100" class="image">
             <div style="padding: 14px;">
-              <span>老板姓名：{{item.bossName}}</span>
+              <template slot-scope="scope">
+                <span>老板姓名：{{compute(scope.bossName)}}</span>
+              </template>
               <br>
               <span>商户电话：{{item.phone}}</span>
               <br>
@@ -118,6 +120,20 @@
             }
         },
         methods:{
+            compute(n) {
+                if (n.length === 2) {
+                    return n.substr(0,1)+"*"
+                } else if(n.length >= 3) {
+                    return n.substr(0,1) + "*" + n.substr(-1)
+                }
+            },
+            open(title,msg,type) {
+                this.$notify({
+                    title: title,
+                    message: msg,
+                    type: type
+                });
+            },
             //获取页面数据
             async getData() {
                 var pageSize = this.pageSize;
@@ -162,6 +178,7 @@
                     }
                 ).then(res => {
                     if(res.data.code === 2000) {
+                        this.open("提示","操作成功","success")
                         this.closeWindow();
                     }
                 })
