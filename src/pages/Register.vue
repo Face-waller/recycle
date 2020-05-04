@@ -42,6 +42,13 @@
             errorMsg:""
         }),
         methods: {
+            open(title,msg,type) {
+                this.$notify({
+                    title: title,
+                    message: msg,
+                    type: type
+                });
+            },
             doRegister() {
                 if (!this.username || !this.password) {
                     this.dialog = true;
@@ -55,10 +62,13 @@
                         password:this.password
                     }
                 ).then(res => {
-                    this.$router.push("/register")
+                    if(res.data.code === 2000) {
+                        this.open("提示","注册成功","success");
+                        this.$router.push("/index")
+                    }
                 }).catch(error => {
-                    this.dialog = true;
-                    this.errorMsg = "注册失败，用户名或密码不符合规范!";
+                    /*this.dialog = true;
+                    this.errorMsg = "注册失败，用户名或密码不符合规范!";*/
                     return false;
                 })
             }

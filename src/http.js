@@ -27,7 +27,7 @@ axios.interceptors.response.use(
       if(error.request) {
         context.open("提示","请求失败，请检查网络","warning")
       }else if(error.response) {
-        context.open("提示","服务器端错误","warning")
+        context.open("提示",error.response.data.message,"warning")
       }else {
         context.open("提示",error.message,"warning")
       }
