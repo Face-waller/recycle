@@ -8,11 +8,11 @@
         </ul>
         <ul class="left" v-else-if="isSuperuser === 0">
           <li>欢迎您，<i style="color: indianred">{{username}}</i> !</li>
-          <li><i @click="loginOut" style="color: indianred" >登出</i></li>
+          <li><i @click="loginOut" style="color: indianred;cursor:pointer" >&nbsp;&nbsp;&nbsp;登出</i></li>
         </ul>
         <ul class="left" v-else>
           <li>欢迎您，<i style="color: indianred">{{username}}</i> !</li>
-          <li><i @click="loginOut" style="color: indianred" >登出</i></li>
+          <li><i @click="loginOut" style="color: indianred;cursor:pointer" >&nbsp;&nbsp;&nbsp;登出</i></li>
           <li><a><router-link style="color: dodgerblue" :to="{ name:'Admin'}">进入后台管理界面</router-link></a></li>
         </ul>
         <ul class="right">
@@ -68,6 +68,7 @@
   import DoDonateForm from "./portal/DoDonateForm";
 
   export default {
+    inject:['reload'],      // 注入App里的reload方法
     data() {
       return {
         id: Object, // 用户id
@@ -92,7 +93,16 @@
     methods: {
         // 登出
         loginOut() {
-
+            this.clearAllCookie();
+            this.reload();
+        },
+        clearAllCookie() {
+            var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+            if (keys) {
+                for (var i = keys.length; i--;){
+                    document.cookie = keys[i] + '=0;path=/;domain=127.0.0.1;expires=' + new Date(0).toUTCString();//清除一级域名下的或指定的
+                }
+            }
         },
         // 去捐赠按钮点击事件
         doDonate() {
