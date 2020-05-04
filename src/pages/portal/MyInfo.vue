@@ -631,10 +631,8 @@
                         "goodsCount":this.productNum //捐赠数量
                     }
                 ).then(res => {
-                    alert("下单成功!");
                     this.dialogFormVisible = false;
                 }).catch(error => {
-                    alert("下单失败")
                 })
             },
             handleClick(i,row) {
@@ -655,7 +653,6 @@
                             this.donatePeopleItems.push(p.name);
                         })
                     }).catch(error => {
-                        alert("获取工作人员列表失败!");
                         this.dialogFormVisible =false;
                     });
                     // 获取地址列表
@@ -667,7 +664,6 @@
                             this.donateAddressItems.push(a.address);
                         })
                     }).catch(error => {
-                        alert("获取地址列表失败!");
                         this.dialogFormVisible = false
                     })
 
@@ -685,7 +681,6 @@
                     ).then(res => {
                         this.logistics1 = res.data.data;
                     }).catch(error => {
-                        alert("物流信息获取失败!");
                         this.dialogVisible1 = false
                     })
                 } else if (i === 3.1) {
@@ -697,9 +692,7 @@
                             "recvingTime":row.recvingTime // 收货时间
                         }
                     ).then(res => {
-                        alert("确认收货成功!")
                     }).catch(error => {
-                        alert("确认收货失败!");
                     })
                 }
             },
@@ -747,15 +740,13 @@
                             "postcode":child.goods.postcode, //邮编
                         }
                     ).then(res => {
-                        alert("新增地址成功");
                         this.show4 = false
                     }).catch(error => {
-                        alert("新增地址失败")
                     })
                 }
             },
             // 加载数据
-            getData(val) {
+            async getData(val) {
                 // 判断是哪个tab初始页面请求
                 if (val === 1) {
                     var state = this.filter1.saleable;
@@ -773,7 +764,6 @@
                         this.currentPageIndex1 = res.data.data.current;
                         this.records1 = res.data.data.records;
                     }).catch(error => {
-                        alert("页面tab1数据请求失败!");
                     })
                 } else if(val === 2) {
                     var state = this.filter2.saleable;
@@ -791,7 +781,6 @@
                         this.currentPageIndex2 = res.data.data.current;
                         this.records2 = res.data.data.records;
                     }).catch(error => {
-                        alert("页面tab2数据请求失败!")
                     })
 
                 } else if(val === 3) {
@@ -810,7 +799,6 @@
                         this.currentPageIndex3 = res.data.data.current;
                         this.records3 = res.data.data.records;
                     }).catch(error => {
-                        alert("页面tab3数据请求失败")
                     })
 
                 } else if(val === 4) {
@@ -819,7 +807,6 @@
                     ).then(res => {
                         this.records4 = res.data.data;
                     }).catch(error => {
-                        alert("页面tab4数据请求失败")
                     })
 
                 } else if(val === 5) {
@@ -828,7 +815,6 @@
                     ).then(res => {
                         this.records5 = res.data.data.residuceScore;
                     }).catch(error => {
-                        alert("积分加载失败")
                     })
                 }
             },

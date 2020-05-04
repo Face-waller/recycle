@@ -496,6 +496,72 @@ const addAddress = function(params) {
   }
 }
 
+const joinUs = function(params) {
+  return {
+    "code": 2000,
+    "statusCode": "Success",
+    "message": "操作成功"
+  }
+}
+
+const getListByScore = function(params) {
+  return {
+    "code": 2000,
+    "statusCode": "Success",
+    "message": "操作成功",
+    "data": [
+      {
+        "id": 1, // 商户id
+        "name": "杭州小龙虾", // 商户名称
+        "bossName": "刘王氏", // 商户老板姓名
+        "phone": "13245265345", // 商户电话
+        "address": "杭州市拱墅区万达广场金街二楼203室", // 商户地址
+        "shopIntroduce": "本店可回收鞋类相关的物品", // 回收物品类型介绍
+        "images": "images/c5a4f5351ad8420387452863b63a13182020-04-20.jpg", // 商户图片
+        "reputationScore": null, // 信誉积分
+        "createTime": 1588577478000, // 创建时间
+        "modifyTime": 1588577478000 // 修改时间
+      },
+      {
+        "id": 1, // 商户id
+        "name": "杭州小龙虾", // 商户名称
+        "bossName": "刘王氏", // 商户老板姓名
+        "phone": "13245265345", // 商户电话
+        "address": "杭州市拱墅区万达广场金街二楼203室", // 商户地址
+        "shopIntroduce": "本店可回收鞋类相关的物品", // 回收物品类型介绍
+        "images": "images/c5a4f5351ad8420387452863b63a13182020-04-20.jpg", // 商户图片
+        "reputationScore": null, // 信誉积分
+        "createTime": 1588577478000, // 创建时间
+        "modifyTime": 1588577478000 // 修改时间
+      },
+      {
+        "id": 1, // 商户id
+        "name": "杭州小龙虾", // 商户名称
+        "bossName": "刘王氏", // 商户老板姓名
+        "phone": "13245265345", // 商户电话
+        "address": "杭州市拱墅区万达广场金街二楼203室", // 商户地址
+        "shopIntroduce": "本店可回收鞋类相关的物品", // 回收物品类型介绍
+        "images": "images/c5a4f5351ad8420387452863b63a13182020-04-20.jpg", // 商户图片
+        "reputationScore": null, // 信誉积分
+        "createTime": 1588577478000, // 创建时间
+        "modifyTime": 1588577478000 // 修改时间
+      },
+      {
+        "id": 1, // 商户id
+        "name": "杭州小龙虾", // 商户名称
+        "bossName": "刘王氏", // 商户老板姓名
+        "phone": "13245265345", // 商户电话
+        "address": "杭州市拱墅区万达广场金街二楼203室", // 商户地址
+        "shopIntroduce": "本店可回收鞋类相关的物品", // 回收物品类型介绍
+        "images": "images/c5a4f5351ad8420387452863b63a13182020-04-20.jpg", // 商户图片
+        "reputationScore": null, // 信誉积分
+        "createTime": 1588577478000, // 创建时间
+        "modifyTime": 1588577478000 // 修改时间
+      },
+    ]
+  }
+
+}
 
 // Mock.mock( url, post/get , 返回的数据)；
 Mock.mock(RegExp('http://127.0.0.1:8001/trash/activity/activityMsg/list' + '.*'), 'get', getIndexData);  // index
@@ -513,3 +579,5 @@ Mock.mock(RegExp('http://127.0.0.1:8001/trash/score/donationGoodsOrder/getListBy
 Mock.mock(RegExp('http://127.0.0.1:8001/trash/score/productOrder/gainGoods'),'post',gainGoods); // myinfo
 Mock.mock(RegExp('http://127.0.0.1:8001/trash/score/productOrder/getOrderListByUser' + '.*'), 'get', getOrderList);  // myinfo
 Mock.mock(RegExp('http://127.0.0.1:8001/trash/address/userAddress/addAddress' + '.*'),'post', addAddress); // myinfo
+Mock.mock(RegExp('http://127.0.0.1:8001/trash/commercial/commercialTenant/add'),'post',joinUs); // index
+Mock.mock(RegExp('http://127.0.0.1:8001/trash/commercial/commercialTenant/getListByScore'),'get',getListByScore); // index

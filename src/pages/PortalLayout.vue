@@ -8,9 +8,11 @@
         </ul>
         <ul class="left" v-else-if="isSuperuser === 0">
           <li>欢迎您，<i style="color: indianred">{{username}}</i> !</li>
+          <li><i @click="loginOut" style="color: indianred" >登出</i></li>
         </ul>
         <ul class="left" v-else>
           <li>欢迎您，<i style="color: indianred">{{username}}</i> !</li>
+          <li><i @click="loginOut" style="color: indianred" >登出</i></li>
           <li><a><router-link style="color: dodgerblue" :to="{ name:'Admin'}">进入后台管理界面</router-link></a></li>
         </ul>
         <ul class="right">
@@ -32,7 +34,7 @@
         <p>©2020 个人作品 product by xxx</p>
       </div>
     </footer>
-    <!--弹出的对话框-->
+    <!-- 对话框-->
     <v-dialog max-width="800" v-model="show" persistent scrollable>
       <v-card
         :elevation="1"
@@ -88,6 +90,10 @@
         this.getDataFromServer();
     },
     methods: {
+        // 登出
+        loginOut() {
+
+        },
         // 去捐赠按钮点击事件
         doDonate() {
             // 判断是否登录
@@ -139,10 +145,8 @@
                     remark:child.goods.remark
                 }
             ).then(res => {
-                alert("捐赠成功!");
                 this.show = false;
             }).catch(error => {
-                alert("捐赠失败!")
             })
 
         },
@@ -154,7 +158,7 @@
         },
     },
     components: {
-        DoDonateForm
+        DoDonateForm,
     }
   }
 </script>

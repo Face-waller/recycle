@@ -164,7 +164,6 @@
                     });
                 }).catch(error => {
                     if (this.shipAddressItems.length <= 0) {
-                        alert("获取收货地址失败!");
                         this.dialogFormVisible = false
                     }
                 });
@@ -195,10 +194,8 @@
                         "productCount":this.form.num,
                     }
                 ).then(res => {
-                    alert("兑换成功!");
                     this.dialogFormVisible = false;
                 }).catch(error => {
-                    alert("兑换失败!");
                 })
             },
             getDataFromServer() {
@@ -219,14 +216,6 @@
                     this.pageSize = resp.data.data.size;
                     this.currentPageIndex = resp.data.data.current;
                     this.records = resp.data.data.records;
-                }).catch(error => {
-                    if (error.response) {
-                        this.errmsg = error.response.data.message;
-                    } else if (error.request) {
-                        console.log("请求超时");
-                    } else {
-                        console.log("Error: ", error.message);
-                    }
                 })
             }
         },
