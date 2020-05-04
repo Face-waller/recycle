@@ -153,12 +153,12 @@
                 this.$http.post(
                     "/trash/commercial/commercialTenant/add",
                     {
-                        name:child.name,
-                        bossName:child.bossName,
-                        phone:child.phone,
-                        address:child.address,
-                        shopIntroduce:child.shopIntroduce,
-                        images:child.images
+                        name:child.goods.name,
+                        bossName:child.goods.bossName,
+                        phone:child.goods.phone,
+                        address:child.goods.address,
+                        shopIntroduce:child.goods.shopIntroduce,
+                        images:child.goods.images
                     }
                 ).then(res => {
                     if(res.data.code === 2000) {
