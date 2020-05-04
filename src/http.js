@@ -15,8 +15,8 @@ axios.interceptors.request.use(function (config) {
 
 axios.interceptors.response.use(
   response => {
-      if(response.data.code !== 2000) {
-        context.open("提示","code: " + response.data.code + ", " + response.data.message,"warning")
+      if(response.data.code !== 2000 && response.config.url !== config.api + "/trash/user/user/verify") {
+        context.open("提示",response.data.message,"warning")
         return response;
       } else {
         return response;

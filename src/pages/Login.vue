@@ -66,8 +66,9 @@ export default {
           }
       ).then(res => {
           // 跳转到首页
-          this.$router.push("/index");
-
+          if(res.data.code === 2000) {
+              this.$router.push("/index");
+          }
       }).catch(error => {
           this.dialog = true;
           this.errorMsg = "用户名或密码错误!";
