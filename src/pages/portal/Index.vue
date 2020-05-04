@@ -37,11 +37,9 @@
       <template v-for="(item,i) in joinItems">
         <el-col :span="18" :offset="2">
           <el-card :body-style="{ padding: '0px' }" shadow="hover">
-            <img style="margin:10px auto;" :src="'http://127.0.0.1:8001/trash/'+item.images" min-width="100" height="100" class="image">
+            <img style="margin:auto;" :src="'http://127.0.0.1:8001/trash/'+item.images" min-width="100" height="100" class="image">
             <div style="padding: 14px;">
-              <template slot-scope="scope">
-                <span>老板姓名：{{compute(scope.bossName)}}</span>
-              </template>
+              <span>老板姓名：{{compute(item.bossName)}}</span>
               <br>
               <span>商户电话：{{item.phone}}</span>
               <br>
