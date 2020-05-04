@@ -13,7 +13,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/material.css'
 
-Vue.config.productionTip = false // 设置开发模式提醒
+Vue.config.productionTip = true // 设置开发模式提醒
 
 
 Vue.use(Vuetify, { theme: config.theme})
@@ -27,9 +27,20 @@ if(Vue.config.productionTip){
 }
 
 /* eslint-disable no-new */
-new Vue({
+var vue = new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  methods: {
+    open(title,msg,type) {
+      this.$notify({
+        title: title,
+        message: msg,
+        type: type
+      });
+    },
+  }
 })
+
+export default vue

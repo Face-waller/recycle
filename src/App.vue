@@ -24,7 +24,7 @@ export default {
               this.isRouterAlive = true   // 再打开
 
           })
-      }
+      },
   }
 }
 </script>
