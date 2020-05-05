@@ -189,7 +189,6 @@
                     "/trash/product/workerMessage/editState?workerId=" + id
                 )
                     .then(res => {
-                        alert("操作成功!");
                         // 刷新当前页面
                         this.reload();
                     })
@@ -214,16 +213,6 @@
                         .then(res => {
                             this.closeWindow();
                         })
-                        .catch(error => {
-                            if (error.response) {
-                                this.errmsg = error.response.data.message;
-                            } else if (error.request) {
-                                console.log("请求超时");
-                            } else {
-                                console.log("Error: ", error.message);
-                            }
-                        })
-
                 } else {
                     // 新增
                     // 发请求新增活动资讯
@@ -239,15 +228,7 @@
                         .then(res => {
                             this.closeWindow();
                         })
-                        .catch(error => {
-                            if (error.response) {
-                                this.errmsg = error.response.data.message;
-                            } else if (error.request) {
-                                console.log("请求超时");
-                            } else {
-                                console.log("Error: ", error.message);
-                            }
-                        })
+
                 }
 
             },
@@ -268,14 +249,6 @@
                     this.pageSize = resp.data.data.size;
                     this.currentPageIndex = resp.data.data.current;
                     this.records = resp.data.data.records;
-                }).catch(error => {
-                    if (error.response) {
-                        this.errmsg = error.response.data.message;
-                    } else if (error.request) {
-                        console.log("请求超时");
-                    } else {
-                        console.log("Error: ", error.message);
-                    }
                 })
 
             },

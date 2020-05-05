@@ -42,7 +42,9 @@ export default new Router({
         route("/item/Activity",'/item/Activity',"Activity"),
         route("/item/Donate",'/item/Donate',"Donate"),
         route("/user/Employees",'/item/Employees',"Employees"),
-        route("/trade/promotion",'/trade/Promotion',"Promotion")
+        route("/user/Customer",'/item/Customer',"Customer"),
+        route("/item/Dealer",'/item/Dealer',"Dealer"),
+        // route("/trade/promotion",'/trade/Promotion',"Promotion")
       ]
     }
   ]

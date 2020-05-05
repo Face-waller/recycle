@@ -32,9 +32,27 @@
     </div>
 <!--    左侧-->
     <img class="joinUs" @click="joinUs" src="../../assets/joinUs.jpg" width="200" height="100" style="border:1px solid dodgerblue ;cursor:pointer;" alt="加入我们" />
+    <div class="leftDiv">
+      <template v-for="(item,i) in joinItems.slice(0,2)">
+        <el-col :span="18" :offset="2">
+          <el-card :body-style="{ padding: '0px' }" shadow="hover">
+            <img style="margin:auto;" :src="'http://127.0.0.1:8001/trash/'+item.images" min-width="100" height="100" class="image">
+            <div style="padding: 14px;">
+              <span>老板姓名：{{compute(item.bossName)}}</span>
+              <br>
+              <span>商户电话：{{item.phone}}</span>
+              <br>
+              <span>商户地址: {{item.address}}</span>
+              <br>
+              <span>回收物品介绍: {{item.shopIntroduce}}</span>
+            </div>
+          </el-card>
+        </el-col>
+      </template>
+    </div>
 <!--    右侧-->
     <div class="rightDiv">
-      <template v-for="(item,i) in joinItems">
+      <template v-for="(item,i) in joinItems.slice(2,4)">
         <el-col :span="18" :offset="2">
           <el-card :body-style="{ padding: '0px' }" shadow="hover">
             <img style="margin:auto;" :src="'http://127.0.0.1:8001/trash/'+item.images" min-width="100" height="100" class="image">
@@ -250,13 +268,20 @@
   .joinUs {
     position: fixed;
     left: 30px;
-    top:250px;
+    top:100px;
+  }
+  .leftDiv {
+    width: 300px;
+    float: left;
+    position: fixed;
+    top: 250px;
+    left: 10px;
   }
   .rightDiv {
     width: 300px;
     float: right;
     position: fixed;
-    top:50px;
+    top:100px;
     right: 0;
   }
   /* @keyframes 动画名称 {} 定义动画 */

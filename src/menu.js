@@ -32,31 +32,19 @@ var menus = [
   },
   {
     action: "people",
-    title: "工作人员管理",
+    title: "人员管理",
     path:"/user",
     items: [
       { title: "工作人员", path: "/Employees" },
+      { title: "用户", path: "/Customer" },
     ]
   },
-  /*{
-    action: "attach_money",
-    title: "销售管理",
-    path:"/trade",
-    items: [
-      { title: "交易统计", path: "/statistics" },
-      { title: "订单管理", path: "/order" },
-      { title: "物流管理", path: "/logistics" },
-      { title: "促销管理", path: "/promotion" }
-    ]
-  },*/
   {
     action: "settings",
-    title: "权限管理",
-    path:"/authority",
+    title: "商户管理",
+    path:"/item",
     items: [
-      { title: "权限管理", path: "/list" },
-      { title: "角色管理", path: "/role" },
-      { title: "人员管理", path: "/member" }
+      { title: "商户", path: "/Dealer" },
     ]
   }
 ]
