@@ -689,7 +689,6 @@
                         "/trash/score/productOrder/gainGoods",
                         {
                             "id":row.id, //兑换订单主键id
-                            "recvingTime":row.recvingTime // 收货时间
                         }
                     ).then(res => {
                     }).catch(error => {
