@@ -143,7 +143,7 @@
                     if (res.data.code === 2000) {
                         this.reload();
                     }
-                    }
+                  }
                 )
             },
             // 某一条离职的点击事件

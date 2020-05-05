@@ -27,25 +27,21 @@
         width="200">
       </el-table-column>
       <el-table-column
-        fixed
         prop="bossName"
         label="老板姓名"
         width="200">
       </el-table-column>
       <el-table-column
-        fixed
         prop="phone"
         label="商户电话"
         width="200">
       </el-table-column>
       <el-table-column
-        fixed
         prop="address"
         label="商户地址"
         width="200">
       </el-table-column>
       <el-table-column
-        fixed
         prop="shopIntroduce"
         label="回收物品介绍"
         width="200">
@@ -60,7 +56,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        fixed
         prop="reputationScore"
         label="信誉积分"
         width="200">

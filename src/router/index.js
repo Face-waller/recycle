@@ -45,7 +45,6 @@ export default new Router({
         route("/item/Dealer",'/item/Dealer',"Dealer"),
         route("/item/DonationOrder",'/item/DonationOrder',"DonationOrder"),
         route("/item/GoodsOrder",'/item/GoodsOrder',"GoodsOrder"),
-        // route("/trade/promotion",'/trade/Promotion',"Promotion")
       ]
     }
   ]

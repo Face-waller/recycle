@@ -13,7 +13,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/material.css'
 
-Vue.config.productionTip = false // 设置开发模式提醒
+Vue.config.productionTip = true // 设置开发模式提醒
 
 
 Vue.use(Vuetify, { theme: config.theme})

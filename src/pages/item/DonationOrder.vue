@@ -1,7 +1,6 @@
 <template>
   <v-card>
     <v-toolbar class="elevation-0">
-<!--      <v-btn color="primary" @click="addActivities">新增活动资讯</v-btn>-->
       <v-spacer/>
       <v-flex xs3>
         状态：
@@ -41,22 +40,22 @@
         prop="state"
         :formatter="stateFormat"
         label="订单状态"
-        width="300">
+        width="200">
       </el-table-column>
       <el-table-column
       prop="goodsCount"
       label="捐赠物品数量"
-      width="120">
+      width="200">
       </el-table-column>
       <el-table-column
         prop="gainScore"
         label="所获积分"
-        width="120">
+        width="300">
       </el-table-column>
       <el-table-column
         prop="gainScoreTime"
         label="获得积分时间"
-        width="120">
+        width="200">
       </el-table-column>
     </el-table>
     <!--    分页-->
@@ -71,31 +70,6 @@
         :total="total">
       </el-pagination>
     </div>
-    <!--弹出的对话框-->
-    <v-dialog max-width="800" v-model="show" persistent scrollable>
-      <v-card>
-        <!--对话框的标题-->
-        <v-toolbar dense dark color="primary">
-          <v-toolbar-title>{{isEdit ? '修改' : '新增'}}活动资讯</v-toolbar-title>
-          <v-spacer/>
-          <!--关闭窗口的按钮-->
-          <v-btn icon @click="closeWindow">
-            <v-icon>close</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <!--对话框的内容，表单-->
-        <v-card-text class="px-3" style="height: 600px">
-          <ActivityForm ref="ch" :oldActivity="oldActivity" :step="step" @close="closeWindow" :is-edit="isEdit"/>
-        </v-card-text>
-        <!--底部按钮，用来操作步骤线-->
-        <v-card-actions class="elevation-10">
-          <v-flex class="xs3 mx-auto">
-            <v-btn @click="addActivity" color="primary">提交</v-btn>
-            <v-btn @click="closeWindow" color="info">取消</v-btn>
-          </v-flex>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-card>
 </template>
 
@@ -110,15 +84,15 @@
         pageSize: 5, // 每页数量
         currentPageIndex: 1, //当前页码
         records: [{
-          "id":4, //捐赠物品订单id
-          "donationGoodsId": 0,  //捐赠物品id
+          "id":"", //捐赠物品订单id
+          "donationGoodsId": "",  //捐赠物品id
           "goodsName": "",  //捐赠物品名称
           "orderNumber": "", //订单号
           "userName": "", //下单人姓名
-          "gainScoreTime": "2020-02-18 18:53:00",  //获得积分的时间
-          "goodsCount": 1,  //捐赠商品数量
-          "state": 1,  //订单状态【0、失效；1、正常；2、已完成】
-          "gainScore": 20.00,  //捐赠商品获得的积分
+          "gainScoreTime": "",  //获得积分的时间
+          "goodsCount": "",  //捐赠商品数量
+          "state": "",  //订单状态【0、失效；1、正常；2、已完成】
+          "gainScore": "",  //捐赠商品获得的积分
         }],
         filter: {
           saleable: true, // 在用/禁用
@@ -197,16 +171,6 @@
             .then(res => {
                 this.closeWindow();
             })
-            .catch(error => {
-                if (error.response) {
-                    this.errmsg = error.response.data.message;
-                } else if (error.request) {
-                    console.log("请求超时");
-                } else {
-                    console.log("Error: ", error.message);
-                }
-            })
-
         } else {
             // 新增
             // 发请求新增活动资讯
@@ -223,17 +187,7 @@
             .then(res => {
                 this.closeWindow();
             })
-            .catch(error => {
-                if (error.response) {
-                    this.errmsg = error.response.data.message;
-                } else if (error.request) {
-                    console.log("请求超时");
-                } else {
-                    console.log("Error: ", error.message);
-                }
-            })
         }
-
       },
       getDataFromServer() {
         // 请求页面数据
@@ -250,14 +204,6 @@
           this.pageSize = resp.data.data.size;
           this.currentPageIndex = resp.data.data.current;
           this.records = resp.data.data.records;
-        }).catch(error => {
-          if (error.response) {
-            this.errmsg = error.response.data.message;
-          } else if (error.request) {
-            console.log("请求超时");
-          } else {
-            console.log("Error: ", error.message);
-          }
         })
       },
       addActivities() {
@@ -286,7 +232,6 @@
       }
     },
     components: {
-      ActivityForm
     }
   }
 </script>
