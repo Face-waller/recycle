@@ -5,10 +5,13 @@
       <v-flex xs3>
         状态：
         <v-btn-toggle mandatory v-model.lazy="filter.saleable">
-          <v-btn flat :value="true">
+          <v-btn flat :value="1">
             在用
           </v-btn>
-          <v-btn flat :value="false">
+          <v-btn flat :value="4">
+            已发货
+          </v-btn>
+          <v-btn flat :value="3">
             已完成
           </v-btn>
         </v-btn-toggle>
@@ -85,7 +88,7 @@
         fixed="right"
         label="操作"
         width="200">
-        <template slot-scope="scope">
+        <template slot-scope="scope" v-if="scope.row.state===1">
           <el-button @click="handleClick(scope.row.id)" type="text" size="small">填写快递单号</el-button>
         </template>
       </el-table-column>
@@ -139,14 +142,14 @@
     name: "GoodsOrder",
     data() {
       return {
-        ID:"", // 被弹窗的订单id
+        ID: "", // 被弹窗的订单id
         total: 1, // 总条数
         pageSize: 5, // 每页数量
         currentPageIndex: 1, //当前页码
         records: [{
           "id": "",  //兑换订单主键id
           "orderNumber": "",  //订单号
-          "productId":"", //商品id
+          "productId": "", //商品id
           "productCount": "", //商品数量
           "deliveryTime": "",  //发货时间
           "recvingTime": "",  //收货时间
@@ -159,7 +162,7 @@
           "modifyTime": ""  //修改时间
         }],
         filter: {
-          saleable: true, // 在用/禁用
+          saleable: 1, // 在用/禁用
           search: '', // 搜索过滤字段
         },
         loading: true, // 是否在加载中
@@ -213,16 +216,16 @@
         // 获取表单数据
         let child = this.$refs.ch;
         this.$http.post(
-            "/trash/score/productOrder/updateTime",
-            {
-                id:this.ID,
-                deliveryTime:child.goods.date,
-                trackingNumber:child.goods.name,
-            }
+          "/trash/score/productOrder/updateTime",
+          {
+            id: this.ID,
+            deliveryTime: child.goods.date,
+            trackingNumber: child.goods.name,
+          }
         ).then(res => {
-            if (res.data.code === 2000) {
-                this.reload();
-            }
+          if (res.data.code === 2000) {
+            this.reload();
+          }
         })
 
       },
@@ -232,7 +235,7 @@
         var pageSize = this.pageSize;
         var currentPageIndex = this.currentPageIndex;
         var param = this.filter.search === null ? " " : this.filter.search;
-        var state = this.filter.saleable === true ? 1 : 2;
+        var state = this.filter.saleable;
         this.$http.get(
           "/trash/score/productOrder/list?pageSize=" + pageSize
           + "&pageIndex=" + currentPageIndex
@@ -257,16 +260,18 @@
         // 关闭窗口
         this.show = false;
       },
-      stateFormat(row,column){
-        if (row.state === 2){
-          return '已完成'
-        }else if (row.state === 1){
+      stateFormat(row, column) {
+        if (row.state === 4) {
+          return '已发货'
+        } else if (row.state === 1) {
           return '在用'
+        }else if (row.state === 3){
+          return '已完成'
         }
       }
     },
     components: {
-        GoodsOrderForm
+      GoodsOrderForm
     }
   }
 </script>
