@@ -52,6 +52,9 @@
           <template v-if="scope.row.status === 1">
             <el-button @click="handle2Click(scope.row.userId)" type="text" size="small">禁用</el-button>
           </template>
+          <template v-if="scope.row.isSuperuser === 0">
+            <el-button @click="handle3Click(scope.row.userId)" type="text" size="small">设为管理员</el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -144,22 +147,39 @@
                 )
             },
             // 某一条离职的点击事件
-            handle2Click(id) {
-                // 发起请求
-                this.$http.get(
-                    "trash/user/user/forbiddenUser",{
-                        params:{
-                            userId:id
-                        }
-                    }
-                )
-                    .then(res => {
-                        if (res.data.code === 2000) {
-                            // 刷新当前页面
-                            this.reload();
-                        }
-                    })
-            },
+          handle2Click(id) {
+            // 发起请求
+            this.$http.get(
+              "trash/user/user/forbiddenUser",{
+                params:{
+                  userId:id
+                }
+              }
+            )
+              .then(res => {
+                if (res.data.code === 2000) {
+                  // 刷新当前页面
+                  this.reload();
+                }
+              })
+          },
+          // 某一条设为管理员的点击事件
+          handle3Click(id) {
+            // 发起请求
+            this.$http.get(
+              "trash/user/user/setSuperUser",{
+                params:{
+                  userId:id
+                }
+              }
+            )
+              .then(res => {
+                if (res.data.code === 2000) {
+                  // 刷新当前页面
+                  this.reload();
+                }
+              })
+          },
             getDataFromServer() {
                 // 请求页面数据
                 // 获取数据
@@ -184,7 +204,7 @@
             stateFormat(row,column) {
                 if (row.status === 0){
                     return '禁用'
-                }else if (row.state === 1){
+                }else if (row.status === 1){
                     return '正常'
                 }
             },

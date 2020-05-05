@@ -46,7 +46,22 @@ var menus = [
     items: [
       { title: "商户", path: "/Dealer" },
     ]
-  }
+  },
+  {
+    action: "phone",
+    title: "捐赠订单管理",
+    path:"/item",
+    items: [
+      { title: "捐赠物品订单", path: "/DonationOrder" },
+    ]
+  },{
+    action: "phone",
+    title: "积分兑换订单管理",
+    path:"/item",
+    items: [
+      { title: "积分兑换订单", path: "/GoodsOrder" },
+    ]
+  },
 ]
 
 export default menus;

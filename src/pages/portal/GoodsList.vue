@@ -7,11 +7,11 @@
             <div style="padding: 14px;">
               <span>商品名：{{item.productName}}</span>
               <br>
-              <span style="height:3px;border:none;border-top:3px double red;">原价：{{item.commodityPrice}}</span>
+              <span >原价：{{item.commodityPrice}}元</span>
               <br>
-              <span>现价{{item.productPrice}}</span>
+              <span>现价：{{item.productPrice}}元</span>
               <br>
-              <span>所需积分: {{item.needPoints}}</span>
+              <span>所需积分: {{item.needPoints}}分</span>
               <div class="bottom clearfix">
                 <el-button type="text" class="button" @click="exchange(item.id)">兑换</el-button>
               </div>

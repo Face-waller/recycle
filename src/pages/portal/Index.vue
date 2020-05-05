@@ -38,6 +38,8 @@
           <el-card :body-style="{ padding: '0px' }" shadow="hover">
             <img style="margin:auto;" :src="'http://127.0.0.1:8001/trash/'+item.images" min-width="100" height="100" class="image">
             <div style="padding: 14px;">
+              <span>商户名称：{{item.name}}</span>
+              <br>
               <span>老板姓名：{{compute(item.bossName)}}</span>
               <br>
               <span>商户电话：{{item.phone}}</span>
@@ -57,6 +59,8 @@
           <el-card :body-style="{ padding: '0px' }" shadow="hover">
             <img style="margin:auto;" :src="'http://127.0.0.1:8001/trash/'+item.images" min-width="100" height="100" class="image">
             <div style="padding: 14px;">
+              <span>商户名称：{{item.name}}</span>
+              <br>
               <span>老板姓名：{{compute(item.bossName)}}</span>
               <br>
               <span>商户电话：{{item.phone}}</span>

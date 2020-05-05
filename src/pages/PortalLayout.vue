@@ -8,11 +8,11 @@
         </ul>
         <ul class="left" v-else-if="isSuperuser === 0">
           <li>欢迎您，<i style="color: indianred">{{username}}</i> !</li>
-          <li><i @click="loginOut" style="color: indianred;cursor:pointer" >&nbsp;&nbsp;&nbsp;登出</i></li>
+          <li><i @click="loginOut" style="color: indianred;cursor:pointer" >&nbsp;&nbsp;&nbsp;退出登录</i></li>
         </ul>
         <ul class="left" v-else>
           <li>欢迎您，<i style="color: indianred">{{username}}</i> !</li>
-          <li><i @click="loginOut" style="color: indianred;cursor:pointer" >&nbsp;&nbsp;&nbsp;登出</i></li>
+          <li><i @click="loginOut" style="color: indianred;cursor:pointer" >&nbsp;&nbsp;&nbsp;退出登录</i></li>
           <li><a><router-link style="color: dodgerblue" :to="{ name:'Admin'}">进入后台管理界面</router-link></a></li>
         </ul>
         <ul class="right">

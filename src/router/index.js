@@ -27,7 +27,6 @@ export default new Router({
         route("/index","/portal/Index","Index"),
         route("/goodsList","/portal/GoodsList","GoodsList"),
         route("/doDonate","/portal/MyInfo","MyInfo")
-
       ]
     },
     {
@@ -44,6 +43,8 @@ export default new Router({
         route("/user/Employees",'/item/Employees',"Employees"),
         route("/user/Customer",'/item/Customer',"Customer"),
         route("/item/Dealer",'/item/Dealer',"Dealer"),
+        route("/item/DonationOrder",'/item/DonationOrder',"DonationOrder"),
+        route("/item/GoodsOrder",'/item/GoodsOrder',"GoodsOrder"),
         // route("/trade/promotion",'/trade/Promotion',"Promotion")
       ]
     }

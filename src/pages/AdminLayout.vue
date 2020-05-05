@@ -17,7 +17,9 @@
               <img src="../assets/2.jpeg">
             </v-list-tile-avatar>-->
             <v-list-tile-content>
-<!--              <v-list-tile-title>欢迎您</v-list-tile-title>-->
+              <v-list-tile-title>
+                <li><a><router-link style="color: dodgerblue" :to="{ name:'Index'}">返回首页</router-link></a></li>
+              </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>

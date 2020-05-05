@@ -4,7 +4,10 @@
       <v-flex xs10 md6>
         <v-card>
           <v-card-text class="px2">
-            <div ref="sale" style="width: 100%;height:350px"></div>
+            <span style="font-size: 20px">捐赠物品类型统计</span>
+            <div ref="sale" style="width: 100%;height:350px">
+
+            </div>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -12,7 +15,10 @@
       <v-flex xs10 md6>
         <v-card >
           <v-card-text class="px2">
-            <div ref="pie" style="width: 100%;height:350px"></div>
+            <span style="font-size: 20px">积分兑换商品类型统计</span>
+            <div ref="pie" style="width: 100%;height:350px">
+
+            </div>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -40,20 +46,20 @@
         // 指定图表的配置项和数据
         var option = {
           title: {
-            text: '销售统计'
+            text: '捐赠物品类型统计'
           },
           tooltip: {},
           legend: {
-            data:['销量']
+            data:['数量']
           },
           xAxis: {
-            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            data: ["可再生物品","衣服","器皿","不再生物品","鞋子","盆栽"]
           },
           yAxis: {},
           series: [{
-            name: '销量',
+            name: '数量',
             type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
+            data: [10, 50, 90, 40, 50, 30]
           }]
         };
 
@@ -65,19 +71,19 @@
         pie.setOption({
           roseType: 'angle',
           title: {
-            text: '访问来源'
+            text: '积分兑换商品类型统计'
           },
           series : [
             {
-              name: '访问来源',
+              name: '兑换种类',
               type: 'pie',
               radius: '55%',
               data:[
-                {value:235, name:'视频广告'},
-                {value:274, name:'联盟广告'},
-                {value:310, name:'邮件营销'},
-                {value:335, name:'直接访问'},
-                {value:400, name:'搜索引擎'}
+                {value:250, name:'手机'},
+                {value:200, name:'平板'},
+                {value:200, name:'衣服'},
+                {value:200, name:'鞋子'},
+                {value:200, name:'绿植'}
               ]
             }
           ],
