@@ -816,6 +816,7 @@
                     this.$http.post(
                         "/trash/address/userAddress/update",
                         {
+                            id: child2.activity.id,
                             name: child2.activity.name,
                             phone: child2.activity.phone,
                             address: child2.activity.address,

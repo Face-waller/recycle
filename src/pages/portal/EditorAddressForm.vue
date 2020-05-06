@@ -7,7 +7,7 @@
           <v-form v-model="valid" ref="basic">
             <v-text-field label="姓名" v-model="activity.name" :counter="200"  hide-details/>
             <v-text-field label="电话" v-model="activity.phone" :counter="200" hide-details/>
-            <v-text-field label="详细电话" v-model="activity.address" :counter="200" hide-details/>
+            <v-text-field label="详细地址" v-model="activity.address" :counter="200" hide-details/>
             <v-text-field label="邮编" v-model="activity.postcode" :counter="200" hide-details/>
           </v-form>
         </v-flex>
