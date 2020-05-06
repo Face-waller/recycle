@@ -2,6 +2,7 @@
   <v-card>
     <v-toolbar flat color="#EFEEEC">
       <v-toolbar-title>您的积分为: {{records5}}</v-toolbar-title>
+      <v-btn color="#778899" @click="setPwd">修改密码</v-btn>
     </v-toolbar>
     <v-tabs vertical>
       <v-tab>
@@ -373,6 +374,14 @@
                   :formatter="defaultAddressFormatter"
                   width="120">
                 </el-table-column>
+                <el-table-column
+                  fixed="right"
+                  label="操作"
+                  width="200">
+                  <template slot-scope="scope">
+                      <el-button @click="handleClick(4.1,scope.row)" type="text" size="small">修改地址</el-button>
+                  </template>
+                </el-table-column>
               </el-table>
               <!--弹出的对话框-->
               <v-dialog max-width="800" v-model="show4" persistent scrollable>
@@ -428,6 +437,41 @@
         <el-button type="primary" @click="confirmExchange">下单捐赠</el-button>
       </div>
     </el-dialog>
+    <!--    修改密码-->
+    <el-dialog title="修改密码" :visible.sync="setPwdDialog">
+      <el-form :model="form">
+        <el-input v-model="inputPwd" placeholder="请输密码"></el-input>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="setPwdDialog = false">取 消</el-button>
+        <el-button type="primary" @click="confirmSetPwd">修改</el-button>
+      </div>
+    </el-dialog>
+    <!--修改地址弹出的对话框-->
+    <v-dialog max-width="800" v-model="show5" persistent scrollable>
+      <v-card>
+        <!--对话框的标题-->
+        <v-toolbar dense color="#BDBDBD">
+          <v-toolbar-title>修改地址</v-toolbar-title>
+          <v-spacer/>
+          <!--关闭窗口的按钮-->
+          <v-btn icon @click="closeWindow(5)">
+            <v-icon>close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <!--对话框的内容，表单-->
+        <v-card-text class="px-3" style="height: 600px">
+          <AddAddressForm ref="ch2" :oldActivity="oldActivity" @close="closeWindow(4)"/>
+        </v-card-text>
+        <!--底部按钮，用来操作步骤线-->
+        <v-card-actions class="elevation-10">
+          <v-flex class="xs3 mx-auto">
+            <v-btn @click="addActivity(5)" color="#E0E0E0">修改</v-btn>
+            <v-btn @click="closeWindow(5)" color="#F5F5F5">取消</v-btn>
+          </v-flex>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -440,6 +484,9 @@
         name: "MyInfo",
         data() {
             return {
+                show5: false,
+                setPwdDialog:false,
+                inputPwd: "", // 修改密码
                 /*我的捐赠物品*/
                 productId: null,  // 下单捐赠物品id
                 productNum: null, // 下单捐赠物品数量
@@ -595,7 +642,7 @@
                     "modifyTime": null//修改时间
                 }],
                 loading4: true, // 是否在加载中
-                oldActivity4: {}, // 即将被编辑的活动信息
+                oldActivity: {}, // 即将被编辑的活动信息
                 isEdit4: false, // 是否是编辑
 
                 /* 积分 */
@@ -603,6 +650,21 @@
             }
         },
         methods: {
+            confirmSetPwd() {
+                this.$http.post(
+                    "/trash/user/user/updatePassword",
+                    {
+                        password: this.inputPwd
+                    }
+                ).then(res => {
+                    if(res.data.data === 2000) {
+                        this.setPwdDialog = false
+                    }
+                })
+            },
+            setPwd() {
+                this.setPwdDialog = true;
+            },
             addActivities() {
                 this.show4 = true;
             },
@@ -691,8 +753,11 @@
                             "id":row.id, //兑换订单主键id
                         }
                     ).then(res => {
-                    }).catch(error => {
                     })
+                } else if (i === 4.1) {
+                    // 修改地址弹窗
+                    this.show5 = true;
+                    this.oldActivity = row;
                 }
             },
             handleSizeChange1(val) {
@@ -723,6 +788,8 @@
                 // 判断是哪个弹窗要关闭
                 if (i === 4) {
                     this.show4 = false;
+                } else if (i === 5) {
+                    this.show5 = false;
                 }
             },
             addActivity(i) {
@@ -741,6 +808,22 @@
                     ).then(res => {
                         this.show4 = false
                     }).catch(error => {
+                    })
+                } else if (i === 5) {
+                    // 获取数据
+                    let child2 = this.$refs.ch2;
+                    this.$http.post(
+                        "/trash/address/userAddress/update",
+                        {
+                            name: child2.activity.name,
+                            phone: child2.activity.phone,
+                            address: child2.activity.address,
+                            postcode: child2.activity.postcode
+                        }
+                    ).then(res => {
+                        if (res.data.data === 2000){
+                            this.show5 = false
+                        }
                     })
                 }
             },
