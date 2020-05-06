@@ -461,7 +461,7 @@
         </v-toolbar>
         <!--对话框的内容，表单-->
         <v-card-text class="px-3" style="height: 600px">
-          <AddAddressForm ref="ch2" :oldActivity="oldActivity" @close="closeWindow(4)"/>
+          <EditorAddressForm ref="ch2" :oldActivity="oldActivity" @close="closeWindow(4)"/>
         </v-card-text>
         <!--底部按钮，用来操作步骤线-->
         <v-card-actions class="elevation-10">
@@ -478,6 +478,7 @@
 <script>
   import AddressForm from "./AddressForm";
   import AddAddressForm from "./AddAddressForm"
+  import EditorAddressForm from "./EditorAddressForm"
   import { formatDate } from "../../common"
 
     export default {
@@ -972,7 +973,8 @@
         },
         components: {
             AddressForm,
-            AddAddressForm
+            AddAddressForm,
+            EditorAddressForm
         },
         watch:{
             // 下单捐赠弹窗关闭
