@@ -54,12 +54,21 @@ var menus = [
     items: [
       { title: "捐赠物品订单", path: "/DonationOrder" },
     ]
-  },{
+  },
+  {
     action: "phone",
     title: "积分兑换订单管理",
     path:"/item",
     items: [
       { title: "积分兑换订单", path: "/GoodsOrder" },
+    ]
+  },
+  {
+    action: "phone",
+    title: "系统配置管理",
+    path:"/item",
+    items: [
+      { title: "系统配置", path: "/SystemConfig" },
     ]
   },
 ]

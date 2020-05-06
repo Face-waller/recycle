@@ -24,7 +24,7 @@
 
 <script>
     export default {
-        name: "JoinUsForm",
+        name: "GoodsOrderForm",
         props: {
             isEdit: {
                 type: Boolean,

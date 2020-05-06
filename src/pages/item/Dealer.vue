@@ -103,7 +103,7 @@
 
     export default {
         inject: ['reload'],      // 注入App里的reload方法
-        name: "Employees",
+        name: "Dealer",
         data() {
             return {
                 total: 1, // 总条数

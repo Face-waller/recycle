@@ -59,6 +59,7 @@
             oldActivity: {// 监控oldActivity的变化
                 handler(val) {
                     if (val) {
+                        this.activity.id = val.id;
                         this.activity.name = val.name;
                         this.activity.phone = val.phone;
                         this.activity.address = val.address;
