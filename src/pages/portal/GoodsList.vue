@@ -3,7 +3,7 @@
     <template v-for="(item,i) in records">
         <el-col :span="4" :offset="3">
           <el-card :body-style="{ padding: '0px' }" shadow="hover">
-            <img :src="'http://127.0.0.1:8001/trash/'+item.productImages" min-width="250" height="250" class="image">
+            <img :src="'http://127.0.0.1:8001/trash/'+item.productImages" height="250" class="image">
             <div style="padding: 14px;">
               <span>商品名：{{item.productName}}</span>
               <br>

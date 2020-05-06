@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="20">
       <el-col :span="16" :offset="4">
-        <v-carousel>
+        <!--<v-carousel>
           <v-carousel-item
             v-for="(item,i) in records"
             :key="i"
@@ -10,8 +10,28 @@
             reverse-transition="fade-transition"
             transition="fade-transition"
           ></v-carousel-item>
-        </v-carousel>
+        </v-carousel>-->
 
+        <v-carousel cycle>
+          <v-carousel-item
+            v-for="(item,i) in records"
+            :key="i"
+            :src="'http://127.0.0.1:8001/trash/'+item.activityImages"
+            reverse-transition="fade-transition"
+            transition="fade-transition"
+          >
+            <v-sheet
+            >
+              <v-row
+                class="fill-height"
+                align="center"
+                justify="center"
+              >
+                <div class="display-3">{{records[i].activityContent}}</div>
+              </v-row>
+            </v-sheet>
+          </v-carousel-item>
+        </v-carousel>
       </el-col>
     </el-row>
     <el-row style="margin-top: 60px;text-align: center">
@@ -20,7 +40,7 @@
           <el-card shadow="hover" body-style="">
             <p style="color: crimson;font-size: 30px">{{item.activityTitle}}</p>
             <p>时间：{{item.activityTime}}</p>
-            <p>内容：{{item.activityContent}}</p>
+<!--            <p>内容：{{item.activityContent}}</p>-->
           </el-card>
         </el-col>
       </template>
