@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row :gutter="20">
+    <el-row :gutter="20" style="margin-top: 150px">
       <el-col :span="16" :offset="4">
         <!--<v-carousel>
           <v-carousel-item
@@ -34,17 +34,17 @@
         </v-carousel>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 60px;text-align: center">
+    <!--<el-row style="margin-top: 60px;text-align: center">
       <template v-for="(item,i) in records">
         <el-col :span="4" :offset="3">
           <el-card shadow="hover" body-style="">
             <p style="color: crimson;font-size: 30px">{{item.activityTitle}}</p>
             <p>时间：{{item.activityTime}}</p>
-<!--            <p>内容：{{item.activityContent}}</p>-->
+&lt;!&ndash;            <p>内容：{{item.activityContent}}</p>&ndash;&gt;
           </el-card>
         </el-col>
       </template>
-    </el-row>
+    </el-row>-->
     <div class="roll">
       <template v-for="(item,i) in records">
           <a target="_blank" :class="'roll'+i" :href="item.blogroll">{{item.blogroll}}</a>
