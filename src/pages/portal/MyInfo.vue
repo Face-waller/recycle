@@ -657,7 +657,7 @@
                         password: this.inputPwd
                     }
                 ).then(res => {
-                    if(res.data.data === 2000) {
+                    if(res.data.code === 2000) {
                         this.setPwdDialog = false
                     }
                 })
