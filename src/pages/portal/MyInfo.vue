@@ -651,6 +651,29 @@
             }
         },
         methods: {
+            open(title,msg,type) {
+                this.$notify({
+                    title: title,
+                    message: msg,
+                    type: type
+                });
+            },
+            // 验证是否登录
+            confirmLogin() {
+                if (this.verifyLogin() === false) {
+                    this.open("提示","您未登录，请登录","warning");
+                    this.$router.push('/index')
+                }
+            },
+            verifyLogin() {
+                this.$http.get("/trash/user/user/verify")
+                    .then(res => {
+                        return res.data.code === 2000
+                    }).catch(error => {
+                        return false;
+                })
+            },
+            // 修改密码
             confirmSetPwd() {
                 this.$http.post(
                     "/trash/user/user/updatePassword",
@@ -1007,11 +1030,15 @@
             }
         },
         created() {
+            this.confirmLogin();
             this.getData(1);
             this.getData(2);
             this.getData(3);
             this.getData(4);
             this.getData(5);
+
+        },
+        mounted() {
         },
         filters: {
             // 时间格式化过滤器
