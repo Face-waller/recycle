@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row :gutter="20" style="margin-top: 150px">
+    <el-row :gutter="20" style="margin-top: 120px">
       <el-col :span="16" :offset="4">
         <!--<v-carousel>
           <v-carousel-item
@@ -27,7 +27,7 @@
                 align="center"
                 justify="center"
               >
-                <div class="display-3">{{records[i].activityContent}}</div>
+                <div class="display-3"><p style="font-size: 20px;margin-top: 100px;font-family: STFangsong">{{records[i].activityContent}}</p></div>
               </v-row>
             </v-sheet>
           </v-carousel-item>
