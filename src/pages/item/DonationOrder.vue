@@ -57,6 +57,14 @@
         label="获得积分时间"
         width="200">
       </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="200">
+        <template slot-scope="scope" v-if="scope.row.state===1">
+          <el-button @click="handle2Click(scope.row.id)" type="text" size="small">取消订单</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <!--    分页-->
     <div class="block" style="text-align: right">
@@ -142,10 +150,10 @@
       handle2Click(id) {
         // 发起请求
         this.$http.get(
-          "/trash/activity/activityMsg/delete?activityId=" + id
+          "/trash/score/donationGoodsOrder/cancelOrder?id=" + id
         )
           .then(res => {
-            alert("禁用成功!");
+            alert("取消订单成功!");
             // 刷新当前页面
             this.reload();
           })

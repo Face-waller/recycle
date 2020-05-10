@@ -202,6 +202,13 @@
                   label="创建时间"
                   width="200">
                 </el-table-column>
+                <el-table-column
+                  label="操作"
+                  width="200">
+                    <template slot-scope="scope" v-if="scope.row.state === 1">
+                      <el-button @click="handle3Click(scope.row.id)" type="text" size="small">取消订单</el-button>
+                    </template>
+                </el-table-column>
               </el-table>
               <!--    分页-->
               <div class="block" style="text-align: right">
@@ -294,12 +301,14 @@
                   width="200">
                 </el-table-column>
                 <el-table-column
-                  fixed="right"
                   label="操作"
                   width="200">
                   <template slot-scope="scope">
                     <template v-if="scope.row.state === 4">
                       <el-button @click="handleClick(3.1,scope.row)" type="text" size="small">确认收货</el-button>
+                    </template>
+                    <template v-if="scope.row.state === 1">
+                      <el-button @click="handle2Click(scope.row.id)" type="text" size="small">取消订单</el-button>
                     </template>
                   </template>
                 </el-table-column>
@@ -784,6 +793,30 @@
                     this.oldActivity = row;
                 }
             },
+          // 某一条禁用的点击事件
+          handle2Click(id) {
+            // 发起请求
+            this.$http.get(
+              "/trash/score/productOrder/cancelOrder?id=" + id
+            )
+              .then(res => {
+                alert("取消订单成功!");
+                // 刷新当前页面
+                this.reload();
+              })
+          },
+          // 某一条禁用的点击事件
+          handle3Click(id) {
+            // 发起请求
+            this.$http.get(
+              "/trash/score/donationGoodsOrder/cancelOrder?id=" + id
+            )
+              .then(res => {
+                alert("取消订单成功!");
+                // 刷新当前页面
+                this.reload();
+              })
+          },
             handleSizeChange1(val) {
                 this.pageSize1 = val;
                 this.getData(1);
