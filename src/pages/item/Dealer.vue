@@ -69,7 +69,7 @@
         fixed="right"
         label="操作"
         width="300">
-        <template slot-scope="scope" v-if="scope.row.records.length === 1 && scope.row.records[0].id === ''">
+        <template slot-scope="scope" v-if="scope.row.records.length === 1 && scope.row[0].id === ''">
           <el-button @click="handleClick(scope.row,1.1)" type="text" size="small">编辑信誉分</el-button>
           <el-button @click="handleClick(scope.row,1.2)" type="text" size="small">修改</el-button>
           <el-button @click="handleClick(scope.row.id,1.3)" type="text" size="small">删除</el-button>
@@ -261,6 +261,7 @@
                 this.$http.post(
                     "/trash/commercial/commercialTenant/update",
                     {
+                        "id":child.activity.id,
                         "name":child.activity.name,
                         "bossName":child.activity.bossName,
                         "phone":child.activity.phone,
