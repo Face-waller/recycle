@@ -300,6 +300,7 @@
                         "/trash/product/donationGoods/setGoodsScore",
                     {
                             "id": this.oldActivity.id,
+                            "userId": this.oldActivity.userId,
                             "acquireScore": child.activity.acquireScore,
                     })
                     .then(res => {
