@@ -11,7 +11,7 @@
             <v-text-field label="地址" v-model="activity.address" :counter="200" hide-details/>
             <v-text-field label="回收物品类型" v-model="activity.shopIntroduce" :counter="200" hide-details/>
 
-            <<v-flex xs3>
+            <v-flex xs3>
             <span style="font-size: 16px; color: #444">商户图片：</span>
             </v-flex>
             <input type="file" v-on:change="pictureModel($event)" accept="*" id="crowd_file">
